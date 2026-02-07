@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spin Physics - Pickleball Bestie</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --paddle-black: #1a1a1a;
+            --paddle-slate: #2d3436;
+            --paddle-gray: #636e72;
+            --court-green: #00b894;
+            --neon-yellow: #d4ff00;
+            --ball-yellow: #e8f442;
+            --white: #ffffff;
+            --off-white: #f8f9fa;
+            --shadow: rgba(0, 0, 0, 0.15);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--off-white);
+            color: var(--paddle-black);
+            line-height: 1.7;
+        }
+        
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--paddle-black);
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            height: 80px;
+        }
+        
+        .logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            letter-spacing: 2px;
+            color: var(--white);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo-ball {
+            width: 32px;
+            height: 32px;
+            background: var(--neon-yellow);
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(212, 255, 0, 0.5);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: var(--neon-yellow);
+        }
+        
+        /* Page Header */
+        .page-header {
+            margin-top: 80px;
+            background: linear-gradient(135deg, var(--paddle-black) 0%, var(--paddle-slate) 100%);
+            padding: 100px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            left: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(212, 255, 0, 0.1), transparent);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        
+        .page-header h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 4.5rem;
+            color: var(--white);
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .page-header p {
+            font-size: 1.3rem;
+            color: var(--off-white);
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 40px;
+        }
+        
+        /* Section */
+        .physics-section {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 50px;
+            margin-bottom: 50px;
+            box-shadow: 0 8px 40px var(--shadow);
+            border-top: 5px solid var(--neon-yellow);
+        }
+        
+        .physics-section h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3rem;
+            letter-spacing: 3px;
+            margin-bottom: 30px;
+            color: var(--paddle-black);
+        }
+        
+        .physics-section h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            letter-spacing: 2px;
+            margin: 40px 0 20px;
+            color: var(--paddle-slate);
+        }
+        
+        .intro-text {
+            font-size: 1.2rem;
+            color: var(--paddle-gray);
+            margin-bottom: 40px;
+            line-height: 1.8;
+        }
+        
+        /* Diagram Container */
+        .diagram-container {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 40px;
+            border-radius: 12px;
+            margin: 40px 0;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .diagram-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--paddle-slate);
+        }
+        
+        .diagram-svg {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            display: block;
+        }
+        
+        /* Formula Box */
+        .formula-box {
+            background: var(--paddle-black);
+            color: var(--neon-yellow);
+            padding: 30px;
+            border-radius: 12px;
+            margin: 30px 0;
+            font-family: 'JetBrains Mono', monospace;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .formula-box h4 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.4rem;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            color: var(--white);
+        }
+        
+        .formula {
+            font-size: 1.3rem;
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        
+        .formula-explanation {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.95rem;
+            color: var(--off-white);
+            margin-top: 15px;
+            line-height: 1.6;
+        }
+        
+        /* Key Insight Box */
+        .key-insight {
+            background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+            padding: 30px;
+            border-radius: 12px;
+            border-left: 6px solid #17a2b8;
+            margin: 30px 0;
+        }
+        
+        .key-insight h4 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+            color: #0c5460;
+            margin-bottom: 15px;
+        }
+        
+        .key-insight p {
+            color: #0c5460;
+            line-height: 1.8;
+        }
+        
+        /* Comparison Grid */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .comparison-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 20px var(--shadow);
+            border-top: 4px solid var(--neon-yellow);
+        }
+        
+        .comparison-card h4 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            color: var(--paddle-black);
+        }
+        
+        .comparison-card ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .comparison-card li {
+            padding: 12px 0 12px 30px;
+            position: relative;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .comparison-card li:last-child {
+            border-bottom: none;
+        }
+        
+        .comparison-card li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--court-green);
+            font-weight: bold;
+            font-size: 1.3rem;
+        }
+        
+        /* Scientific Note */
+        .scientific-note {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffe69c 100%);
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 6px solid #ffc107;
+            margin: 30px 0;
+        }
+        
+        .scientific-note h4 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            letter-spacing: 1px;
+            color: #856404;
+            margin-bottom: 12px;
+        }
+        
+        .scientific-note p {
+            color: #856404;
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+        
+        /* Practical Application */
+        .practical-app {
+            background: linear-gradient(135deg, var(--paddle-slate) 0%, var(--paddle-black) 100%);
+            color: var(--white);
+            padding: 40px;
+            border-radius: 12px;
+            margin: 40px 0;
+        }
+        
+        .practical-app h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            letter-spacing: 2px;
+            color: var(--neon-yellow);
+            margin-bottom: 20px;
+        }
+        
+        .practical-app p {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+        
+        .practical-app ul {
+            list-style: none;
+            margin-top: 20px;
+        }
+        
+        .practical-app li {
+            padding: 10px 0 10px 30px;
+            position: relative;
+        }
+        
+        .practical-app li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--neon-yellow);
+            font-weight: bold;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .physics-section {
+                padding: 30px 20px;
+            }
+            
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .page-header h1 {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <div class="logo-ball"></div>
+                PICKLEBALL BESTIE
+            </a>
+            <ul class="nav-links">
+                <li><a href="fundamentals.html">Fundamentals</a></li>
+                <li><a href="spin-physics.html">Spin Physics</a></li>
+                <li><a href="paddle-guide.html">Paddle Guide</a></li>
+                <li><a href="#drills">Drills</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <h1>SPIN PHYSICS</h1>
+        <p>Understanding the Magnus effect, friction coefficients, and trajectory mechanics that govern topspin and backspin in pickleball</p>
+    </div>
+
+    <div class="container">
+        <!-- Introduction -->
+        <div class="physics-section">
+            <h2>The Science of Spin</h2>
+            <p class="intro-text">
+                When you brush the paddle across the ball, you create rotation. That rotation fundamentally changes the ball's flight path and bounce characteristics through aerodynamic forces. Understanding the physics helps you predict ball behavior, adjust your returns, and generate effective spin yourself.
+            </p>
+
+            <div class="key-insight">
+                <h4>💡 Core Principle</h4>
+                <p>Spin works because rotating balls drag air around with them. This creates pressure differences that push the ball in specific directions - down for topspin, up for backspin. The faster the rotation, the stronger the effect.</p>
+            </div>
+        </div>
+
+        <!-- Magnus Effect -->
+        <div class="physics-section">
+            <h2>The Magnus Effect</h2>
+            
+            <p class="intro-text">
+                The Magnus effect is the aerodynamic force that acts on spinning objects moving through air. Named after German physicist Heinrich Magnus, this is the fundamental principle behind all ball spin in sports.
+            </p>
+
+            <div class="formula-box">
+                <h4>Magnus Force Formula</h4>
+                <div class="formula">
+                    F<sub>M</sub> = ½ρv²AC<sub>L</sub>
+                </div>
+                <div class="formula-explanation">
+                    <strong>Where:</strong><br>
+                    F<sub>M</sub> = Magnus force (Newtons)<br>
+                    ρ = air density (~1.225 kg/m³ at sea level)<br>
+                    v = velocity of ball relative to air (m/s)<br>
+                    A = cross-sectional area of ball (πr²)<br>
+                    C<sub>L</sub> = lift coefficient (depends on spin rate and surface)
+                </div>
+            </div>
+
+            <div class="diagram-container">
+                <h3 class="diagram-title">Magnus Effect on Topspin Ball</h3>
+                <svg class="diagram-svg" viewBox="0 0 800 400">
+                    <!-- Ball with topspin rotation -->
+                    <circle cx="400" cy="200" r="60" fill="#e8f442" stroke="#1a1a1a" stroke-width="3"/>
+                    
+                    <!-- Rotation arrows -->
+                    <path d="M 340 160 Q 360 140 390 150" fill="none" stroke="#dc3545" stroke-width="3" marker-end="url(#arrowRed)"/>
+                    <path d="M 460 240 Q 440 260 410 250" fill="none" stroke="#dc3545" stroke-width="3" marker-end="url(#arrowRed)"/>
+                    <text x="400" y="210" text-anchor="middle" font-size="20" fill="#1a1a1a" font-weight="bold">⟲</text>
+                    
+                    <!-- Velocity vector (right) -->
+                    <line x1="480" y1="200" x2="600" y2="200" stroke="#2d3436" stroke-width="4" marker-end="url(#arrowBlack)"/>
+                    <text x="590" y="185" font-size="18" fill="#2d3436" font-weight="bold">v</text>
+                    
+                    <!-- Air flow lines (top) -->
+                    <path d="M 100 120 Q 250 110 340 130" fill="none" stroke="#636e72" stroke-width="2" stroke-dasharray="5,5"/>
+                    <path d="M 100 100 Q 250 90 340 110" fill="none" stroke="#636e72" stroke-width="2" stroke-dasharray="5,5"/>
+                    <text x="50" y="115" font-size="14" fill="#636e72">Fast air</text>
+                    
+                    <!-- Air flow lines (bottom) -->
+                    <path d="M 100 280 Q 250 290 340 270" fill="none" stroke="#636e72" stroke-width="2" stroke-dasharray="5,5"/>
+                    <path d="M 100 300 Q 250 310 340 290" fill="none" stroke="#636e72" stroke-width="2" stroke-dasharray="5,5"/>
+                    <text x="50" y="295" font-size="14" fill="#636e72">Slow air</text>
+                    
+                    <!-- Magnus force arrow (downward) -->
+                    <line x1="400" y1="280" x2="400" y2="350" stroke="#d4ff00" stroke-width="6" marker-end="url(#arrowYellow)"/>
+                    <text x="420" y="325" font-size="20" fill="#1a1a1a" font-weight="bold">F<tspan font-size="14" baseline-shift="sub">Magnus</tspan></text>
+                    
+                    <!-- Labels -->
+                    <text x="400" y="30" text-anchor="middle" font-size="22" fill="#1a1a1a" font-weight="bold">TOPSPIN</text>
+                    <text x="400" y="380" text-anchor="middle" font-size="16" fill="#636e72">Ball curves downward</text>
+                    
+                    <!-- Pressure indicators -->
+                    <text x="400" y="140" text-anchor="middle" font-size="14" fill="#dc3545" font-weight="bold">Low Pressure</text>
+                    <text x="400" y="340" text-anchor="middle" font-size="14" fill="#17a2b8" font-weight="bold">High Pressure</text>
+                    
+                    <defs>
+                        <marker id="arrowRed" markerWidth="10" markerHeight="10" refX="5" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#dc3545" />
+                        </marker>
+                        <marker id="arrowBlack" markerWidth="10" markerHeight="10" refX="5" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#2d3436" />
+                        </marker>
+                        <marker id="arrowYellow" markerWidth="12" markerHeight="12" refX="6" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L12,3 z" fill="#d4ff00" />
+                        </marker>
+                    </defs>
+                </svg>
+            </div>
+
+            <div class="scientific-note">
+                <h4>📐 What's Happening Physically</h4>
+                <p>
+                    The rotating ball drags a thin boundary layer of air with it. On the top of a topspin ball, this layer moves in the same direction as the ball's forward motion, creating fast-moving air and low pressure (Bernoulli's principle). On the bottom, the boundary layer moves against the ball's motion, creating slow-moving air and high pressure. The pressure difference creates a net downward force.
+                </p>
+            </div>
+
+            <div class="diagram-container">
+                <h3 class="diagram-title">Magnus Effect on Backspin Ball</h3>
+                <svg class="diagram-svg" viewBox="0 0 800 400">
+                    <!-- Ball with backspin rotation -->
+                    <circle cx="400" cy="200" r="60" fill="#e8f442" stroke="#1a1a1a" stroke-width="3"/>
+                    
+                    <!-- Rotation arrows (opposite direction) -->
+                    <path d="M 460 160 Q 440 140 410 150" fill="none" stroke="#dc3545" stroke-width="3" marker-end="url(#arrowRed2)"/>
+                    <path d="M 340 240 Q 360 260 390 250" fill="none" stroke="#dc3545" stroke-width="3" marker-end="url(#arrowRed2)"/>
+                    <text x="400" y="210" text-anchor="middle" font-size="20" fill="#1a1a1a" font-weight="bold">⟳</text>
+                    
+                    <!-- Velocity vector -->
+                    <line x1="480" y1="200" x2="600" y2="200" stroke="#2d3436" stroke-width="4" marker-end="url(#arrowBlack2)"/>
+                    <text x="590" y="185" font-size="18" fill="#2d3436" font-weight="bold">v</text>
+                    
+                    <!-- Air flow lines (top) - slow -->
+                    <path d="M 100 120 Q 250 110 340 130" fill="none" stroke="#636e72" stroke-width="2" stroke-dasharray="5,5"/>
+                    <path d="M 100 100 Q 250 90 340 110" fill="none" stroke="#636e72" stroke-width="2" stroke-dasharray="5,5"/>
+                    <text x="50" y="115" font-size="14" fill="#636e72">Slow air</text>
+                    
+                    <!-- Air flow lines (bottom) - fast -->
+                    <path d="M 100 280 Q 250 290 340 270" fill="none" stroke="#636e72" stroke-width="2" stroke-dasharray="5,5"/>
+                    <path d="M 100 300 Q 250 310 340 290" fill="none" stroke="#636e72" stroke-width="2" stroke-dasharray="5,5"/>
+                    <text x="50" y="295" font-size="14" fill="#636e72">Fast air</text>
+                    
+                    <!-- Magnus force arrow (upward) -->
+                    <line x1="400" y1="120" x2="400" y2="50" stroke="#d4ff00" stroke-width="6" marker-end="url(#arrowYellow2)"/>
+                    <text x="420" y="95" font-size="20" fill="#1a1a1a" font-weight="bold">F<tspan font-size="14" baseline-shift="sub">Magnus</tspan></text>
+                    
+                    <!-- Labels -->
+                    <text x="400" y="30" text-anchor="middle" font-size="22" fill="#1a1a1a" font-weight="bold">BACKSPIN</text>
+                    <text x="400" y="380" text-anchor="middle" font-size="16" fill="#636e72">Ball floats / curves upward</text>
+                    
+                    <!-- Pressure indicators -->
+                    <text x="400" y="150" text-anchor="middle" font-size="14" fill="#17a2b8" font-weight="bold">High Pressure</text>
+                    <text x="400" y="330" text-anchor="middle" font-size="14" fill="#dc3545" font-weight="bold">Low Pressure</text>
+                    
+                    <defs>
+                        <marker id="arrowRed2" markerWidth="10" markerHeight="10" refX="5" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#dc3545" />
+                        </marker>
+                        <marker id="arrowBlack2" markerWidth="10" markerHeight="10" refX="5" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#2d3436" />
+                        </marker>
+                        <marker id="arrowYellow2" markerWidth="12" markerHeight="12" refX="6" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L12,3 z" fill="#d4ff00" />
+                        </marker>
+                    </defs>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Ball Trajectories -->
+        <div class="physics-section">
+            <h2>Trajectory Mechanics</h2>
+            
+            <p class="intro-text">
+                The Magnus force combines with gravity to create distinctive flight paths. Understanding these trajectories helps you predict where the ball will land and how it will bounce.
+            </p>
+
+            <div class="diagram-container">
+                <h3 class="diagram-title">Flight Path Comparison</h3>
+                <svg class="diagram-svg" viewBox="0 0 800 500">
+                    <!-- Net -->
+                    <line x1="400" y1="250" x2="400" y2="350" stroke="#1a1a1a" stroke-width="4"/>
+                    <rect x="395" y="250" width="10" height="100" fill="#1a1a1a"/>
+                    <text x="400" y="370" text-anchor="middle" font-size="14" fill="#636e72">NET</text>
+                    
+                    <!-- Ground line -->
+                    <line x1="50" y1="350" x2="750" y2="350" stroke="#636e72" stroke-width="2"/>
+                    
+                    <!-- Flat shot (baseline) -->
+                    <path d="M 100 300 Q 400 200 700 300" fill="none" stroke="#636e72" stroke-width="3" stroke-dasharray="10,5"/>
+                    <text x="700" y="290" font-size="14" fill="#636e72">No spin</text>
+                    
+                    <!-- Topspin trajectory (dips down) -->
+                    <path d="M 100 300 Q 350 180 500 280 Q 600 330 700 350" fill="none" stroke="#00b894" stroke-width="4"/>
+                    <circle cx="100" cy="300" r="8" fill="#00b894"/>
+                    <circle cx="700" cy="350" r="8" fill="#00b894"/>
+                    <text x="550" y="360" font-size="16" fill="#00b894" font-weight="bold">Topspin (drops fast)</text>
+                    
+                    <!-- Backspin trajectory (floats) -->
+                    <path d="M 100 300 Q 450 150 700 220" fill="none" stroke="#e74c3c" stroke-width="4"/>
+                    <circle cx="100" cy="300" r="8" fill="#e74c3c"/>
+                    <circle cx="700" cy="220" r="8" fill="#e74c3c"/>
+                    <text x="550" y="180" font-size="16" fill="#e74c3c" font-weight="bold">Backspin (floats)</text>
+                    
+                    <!-- Arrows showing forces -->
+                    <line x1="500" y1="280" x2="500" y2="320" stroke="#d4ff00" stroke-width="3" marker-end="url(#arrowDown)"/>
+                    <text x="510" y="310" font-size="12" fill="#1a1a1a">F<tspan baseline-shift="sub" font-size="10">M</tspan> down</text>
+                    
+                    <line x1="550" y1="170" x2="550" y2="130" stroke="#d4ff00" stroke-width="3" marker-end="url(#arrowUp)"/>
+                    <text x="560" y="155" font-size="12" fill="#1a1a1a">F<tspan baseline-shift="sub" font-size="10">M</tspan> up</text>
+                    
+                    <defs>
+                        <marker id="arrowDown" markerWidth="10" markerHeight="10" refX="5" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#d4ff00" />
+                        </marker>
+                        <marker id="arrowUp" markerWidth="10" markerHeight="10" refX="5" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#d4ff00" />
+                        </marker>
+                    </defs>
+                </svg>
+            </div>
+
+            <div class="formula-box">
+                <h4>Trajectory Equations</h4>
+                <div class="formula">
+                    y(t) = y₀ + v<sub>y</sub>t - ½gt² + ∫(F<sub>M</sub>/m)dt
+                </div>
+                <div class="formula-explanation">
+                    Position depends on: initial height (y₀), vertical velocity (v<sub>y</sub>), gravity acceleration (g = 9.81 m/s²), and accumulated Magnus force effect over time. The Magnus term is what differentiates spin trajectories from simple parabolic motion.
+                </div>
+            </div>
+        </div>
+
+        <!-- Bounce Mechanics -->
+        <div class="physics-section">
+            <h2>Bounce Characteristics</h2>
+            
+            <p class="intro-text">
+                The spin dramatically affects what happens when the ball contacts the court surface. This is governed by the coefficient of restitution and friction between ball and surface.
+            </p>
+
+            <div class="comparison-grid">
+                <div class="comparison-card">
+                    <h4>Topspin Bounce</h4>
+                    <ul>
+                        <li><strong>Kicks upward:</strong> Forward rotation accelerates the bounce</li>
+                        <li><strong>Accelerates forward:</strong> Ball speeds up after contact</li>
+                        <li><strong>Bounces higher:</strong> Vertical component increases</li>
+                        <li><strong>Friction amplifies spin:</strong> Rough surfaces enhance effect</li>
+                    </ul>
+                </div>
+                
+                <div class="comparison-card">
+                    <h4>Backspin Bounce</h4>
+                    <ul>
+                        <li><strong>Stays low:</strong> Backward rotation suppresses bounce height</li>
+                        <li><strong>Decelerates:</strong> Ball slows down after contact</li>
+                        <li><strong>Can bounce backward:</strong> With heavy spin on rough surfaces</li>
+                        <li><strong>Floats after bounce:</strong> Reduced forward velocity</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="diagram-container">
+                <h3 class="diagram-title">Bounce Vector Analysis</h3>
+                <svg class="diagram-svg" viewBox="0 0 800 400">
+                    <!-- Ground -->
+                    <line x1="50" y1="300" x2="750" y2="300" stroke="#1a1a1a" stroke-width="4"/>
+                    <rect x="50" y="300" width="700" height="20" fill="#98d8c8"/>
+                    
+                    <!-- Topspin bounce (left side) -->
+                    <g>
+                        <text x="200" y="50" text-anchor="middle" font-size="20" fill="#00b894" font-weight="bold">TOPSPIN</text>
+                        
+                        <!-- Incoming ball -->
+                        <circle cx="150" cy="200" r="20" fill="#e8f442" opacity="0.5"/>
+                        <path d="M 150 200 L 200 280" stroke="#00b894" stroke-width="3" marker-end="url(#arrowGreen)"/>
+                        <text x="120" y="240" font-size="14" fill="#00b894">v<tspan baseline-shift="sub" font-size="10">in</tspan></text>
+                        
+                        <!-- Bounce point -->
+                        <circle cx="200" cy="300" r="8" fill="#dc3545"/>
+                        
+                        <!-- Outgoing ball -->
+                        <circle cx="280" cy="200" r="20" fill="#e8f442" opacity="0.5"/>
+                        <path d="M 200 280 L 280 180" stroke="#00b894" stroke-width="3" marker-end="url(#arrowGreen)"/>
+                        <text x="250" y="220" font-size="14" fill="#00b894">v<tspan baseline-shift="sub" font-size="10">out</tspan></text>
+                        
+                        <!-- Spin arrow -->
+                        <text x="200" y="160" text-anchor="middle" font-size="24" fill="#dc3545">⟲</text>
+                        
+                        <!-- Annotations -->
+                        <text x="200" y="350" text-anchor="middle" font-size="13" fill="#636e72">Kicks up & forward</text>
+                    </g>
+                    
+                    <!-- Backspin bounce (right side) -->
+                    <g>
+                        <text x="600" y="50" text-anchor="middle" font-size="20" fill="#e74c3c" font-weight="bold">BACKSPIN</text>
+                        
+                        <!-- Incoming ball -->
+                        <circle cx="550" cy="200" r="20" fill="#e8f442" opacity="0.5"/>
+                        <path d="M 550 200 L 600 280" stroke="#e74c3c" stroke-width="3" marker-end="url(#arrowRed3)"/>
+                        <text x="520" y="240" font-size="14" fill="#e74c3c">v<tspan baseline-shift="sub" font-size="10">in</tspan></text>
+                        
+                        <!-- Bounce point -->
+                        <circle cx="600" cy="300" r="8" fill="#dc3545"/>
+                        
+                        <!-- Outgoing ball (lower trajectory) -->
+                        <circle cx="680" cy="240" r="20" fill="#e8f442" opacity="0.5"/>
+                        <path d="M 600 280 L 680 250" stroke="#e74c3c" stroke-width="3" marker-end="url(#arrowRed3)"/>
+                        <text x="650" y="260" font-size="14" fill="#e74c3c">v<tspan baseline-shift="sub" font-size="10">out</tspan></text>
+                        
+                        <!-- Spin arrow -->
+                        <text x="600" y="160" text-anchor="middle" font-size="24" fill="#dc3545">⟳</text>
+                        
+                        <!-- Annotations -->
+                        <text x="600" y="350" text-anchor="middle" font-size="13" fill="#636e72">Stays low & slow</text>
+                    </g>
+                    
+                    <defs>
+                        <marker id="arrowGreen" markerWidth="10" markerHeight="10" refX="5" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#00b894" />
+                        </marker>
+                        <marker id="arrowRed3" markerWidth="10" markerHeight="10" refX="5" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#e74c3c" />
+                        </marker>
+                    </defs>
+                </svg>
+            </div>
+
+            <div class="scientific-note">
+                <h4>⚙️ Coefficient of Restitution (COR)</h4>
+                <p>
+                    COR = v<sub>out</sub> / v<sub>in</sub> measures how much velocity is retained after bounce. For pickleballs on court surfaces, COR ≈ 0.70-0.80. Topspin increases effective COR in the forward direction due to friction-spin coupling. Backspin decreases it, making the ball "die" on contact.
+                </p>
+            </div>
+        </div>
+
+        <!-- Practical Application -->
+        <div class="physics-section">
+            <div class="practical-app">
+                <h3>Applying Physics to Your Game</h3>
+                
+                <p><strong>When Returning Topspin:</strong></p>
+                <ul>
+                    <li>Ball will kick up higher and faster than it looks</li>
+                    <li>Take the ball earlier (at top of bounce or on the rise)</li>
+                    <li>Contact point should be higher in your strike zone</li>
+                    <li>Use a flatter or counter-spin swing (slice) to neutralize</li>
+                    <li>Absorb pace - don't add to the existing energy</li>
+                </ul>
+                
+                <p style="margin-top: 30px;"><strong>When Returning Backspin:</strong></p>
+                <ul>
+                    <li>Ball will stay lower and slower than expected</li>
+                    <li>Get lower in your stance to contact below the ball</li>
+                    <li>Provide your own lift - the ball won't rise on its own</li>
+                    <li>Add forward swing to compensate for reduced pace</li>
+                    <li>Expect the ball to "float" or "die" after the bounce</li>
+                </ul>
+                
+                <p style="margin-top: 30px;"><strong>Generating Your Own Spin:</strong></p>
+                <ul>
+                    <li><strong>Topspin:</strong> Brush up the back of the ball (low to high swing path)</li>
+                    <li><strong>Backspin:</strong> Brush down the back of the ball (high to low swing path)</li>
+                    <li><strong>Spin rate matters:</strong> Faster brushing = stronger Magnus effect</li>
+                    <li><strong>Contact angle:</strong> Slightly closed face for topspin, open for slice</li>
+                    <li><strong>Racquet speed > power:</strong> Spin comes from velocity, not force</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Advanced Topics -->
+        <div class="physics-section">
+            <h2>Advanced Considerations</h2>
+            
+            <h3>Environmental Factors</h3>
+            <p>The Magnus effect is influenced by air density, which varies with altitude, temperature, and humidity:</p>
+            
+            <div class="comparison-grid">
+                <div class="comparison-card">
+                    <h4>High Altitude</h4>
+                    <ul>
+                        <li>Lower air density (ρ decreases)</li>
+                        <li>Weaker Magnus force</li>
+                        <li>Less spin effect on trajectory</li>
+                        <li>Ball travels faster and farther</li>
+                    </ul>
+                </div>
+                
+                <div class="comparison-card">
+                    <h4>High Humidity</h4>
+                    <ul>
+                        <li>Slightly lower air density</li>
+                        <li>Ball absorbs moisture (increases mass)</li>
+                        <li>Reduced Magnus effect relative to ball weight</li>
+                        <li>Spin effectiveness decreases</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 50px;">Surface Texture Effects</h3>
+            <p>The pickleball's surface texture (40 holes) creates turbulent boundary layers that enhance spin grip:</p>
+            
+            <div class="key-insight">
+                <h4>🎾 Ball Surface Mechanics</h4>
+                <p>
+                    Unlike smooth balls, the pickleball's perforated surface creates micro-vortices in the boundary layer. These increase the effective friction coefficient with air, making the Magnus effect more pronounced at lower spin rates. This is why even moderate brush contact produces noticeable spin in pickleball compared to other racquet sports.
+                </p>
+            </div>
+
+            <div class="formula-box">
+                <h4>Spin Decay Over Time</h4>
+                <div class="formula">
+                    ω(t) = ω₀e<sup>-kt</sup>
+                </div>
+                <div class="formula-explanation">
+                    Spin rate (ω) decays exponentially due to air resistance. The decay constant (k) depends on surface texture and air density. Pickleballs lose approximately 30-40% of initial spin rate over a typical rally distance (30 feet), meaning the Magnus effect weakens as the ball travels.
+                </div>
+            </div>
+        </div>
+
+        <!-- Conclusion -->
+        <div class="physics-section">
+            <h2>Summary: Why This Matters</h2>
+            
+            <p class="intro-text">
+                Understanding spin physics transforms intuition into predictable strategy. When you see your opponent's paddle angle and swing path, you can predict:
+            </p>
+
+            <ul style="font-size: 1.1rem; line-height: 2; margin: 30px 0 30px 40px;">
+                <li><strong>Flight trajectory:</strong> How the ball will curve in the air</li>
+                <li><strong>Bounce behavior:</strong> Where and how high it will kick</li>
+                <li><strong>Required adjustment:</strong> Your contact point and swing path to counter</li>
+                <li><strong>Optimal response:</strong> Whether to flatten, counter-spin, or absorb</li>
+            </ul>
+
+            <p class="intro-text">
+                The Magnus effect, bounce mechanics, and spin decay aren't just abstract concepts - they're the physical laws governing every rally. Master the physics, and you'll stop reacting to surprises and start executing with precision.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

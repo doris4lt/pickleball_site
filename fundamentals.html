@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fundamentals - Pickleball Bestie</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --paddle-black: #1a1a1a;
+            --paddle-slate: #2d3436;
+            --paddle-gray: #636e72;
+            --court-green: #00b894;
+            --neon-yellow: #d4ff00;
+            --ball-yellow: #e8f442;
+            --white: #ffffff;
+            --off-white: #f8f9fa;
+            --shadow: rgba(0, 0, 0, 0.15);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--off-white);
+            color: var(--paddle-black);
+            line-height: 1.6;
+        }
+        
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--paddle-black);
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            height: 80px;
+        }
+        
+        .logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            letter-spacing: 2px;
+            color: var(--white);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo-ball {
+            width: 32px;
+            height: 32px;
+            background: var(--neon-yellow);
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(212, 255, 0, 0.5);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--neon-yellow);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: var(--neon-yellow);
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        /* Page Header */
+        .page-header {
+            margin-top: 80px;
+            background: linear-gradient(135deg, var(--paddle-black) 0%, var(--paddle-slate) 100%);
+            padding: 80px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(212, 255, 0, 0.15), transparent);
+            border-radius: 50%;
+        }
+        
+        .page-header h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 4.5rem;
+            color: var(--white);
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .page-header p {
+            font-size: 1.3rem;
+            color: var(--off-white);
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 80px 40px;
+        }
+        
+        /* Section */
+        .section {
+            margin-bottom: 100px;
+        }
+        
+        .section-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3rem;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 4px solid var(--neon-yellow);
+            display: inline-block;
+        }
+        
+        .section-intro {
+            font-size: 1.2rem;
+            color: var(--paddle-gray);
+            margin-bottom: 50px;
+            max-width: 900px;
+        }
+        
+        /* Skill Cards */
+        .skill-grid {
+            display: grid;
+            gap: 40px;
+        }
+        
+        .skill-card {
+            background: var(--white);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 30px var(--shadow);
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+        }
+        
+        .skill-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 50px rgba(0, 0, 0, 0.2);
+            border-color: var(--neon-yellow);
+        }
+        
+        .skill-header {
+            background: linear-gradient(135deg, var(--paddle-slate) 0%, var(--paddle-black) 100%);
+            padding: 30px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .skill-header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(212, 255, 0, 0.1), transparent);
+        }
+        
+        .skill-number {
+            display: inline-block;
+            background: var(--neon-yellow);
+            color: var(--paddle-black);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 50px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(212, 255, 0, 0.4);
+        }
+        
+        .skill-header h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.2rem;
+            letter-spacing: 2px;
+            color: var(--white);
+            margin-bottom: 10px;
+        }
+        
+        .skill-header p {
+            color: var(--off-white);
+            font-size: 1.05rem;
+        }
+        
+        .skill-body {
+            padding: 40px;
+        }
+        
+        .why-critical {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffe69c 100%);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            border-left: 5px solid #ffc107;
+        }
+        
+        .why-critical h4 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.4rem;
+            letter-spacing: 1px;
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        
+        .why-critical p {
+            color: #856404;
+            line-height: 1.8;
+        }
+        
+        /* Court Diagram */
+        .court-container {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 12px;
+            margin: 30px 0;
+        }
+        
+        .court-svg {
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto;
+            display: block;
+        }
+        
+        /* Key Points */
+        .key-points {
+            margin: 30px 0;
+        }
+        
+        .key-points h4 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.6rem;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            color: var(--paddle-black);
+        }
+        
+        .key-points ul {
+            list-style: none;
+            display: grid;
+            gap: 15px;
+        }
+        
+        .key-points li {
+            padding-left: 35px;
+            position: relative;
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+        
+        .key-points li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--neon-yellow);
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        /* Practice Drill Box */
+        .practice-drill {
+            background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 5px solid #17a2b8;
+            margin-top: 30px;
+        }
+        
+        .practice-drill h4 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.4rem;
+            letter-spacing: 1px;
+            color: #0c5460;
+            margin-bottom: 10px;
+        }
+        
+        .practice-drill p {
+            color: #0c5460;
+            line-height: 1.8;
+        }
+        
+        /* Watch Out Box */
+        .watch-out {
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 5px solid #dc3545;
+            margin-top: 20px;
+        }
+        
+        .watch-out h4 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.4rem;
+            letter-spacing: 1px;
+            color: #721c24;
+            margin-bottom: 10px;
+        }
+        
+        .watch-out ul {
+            list-style: none;
+            margin-top: 10px;
+        }
+        
+        .watch-out li {
+            padding-left: 25px;
+            position: relative;
+            color: #721c24;
+            margin-bottom: 8px;
+        }
+        
+        .watch-out li::before {
+            content: '✗';
+            position: absolute;
+            left: 0;
+            color: #dc3545;
+            font-weight: bold;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 3rem;
+            }
+            
+            .section-title {
+                font-size: 2.2rem;
+            }
+            
+            .skill-body {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <div class="logo-ball"></div>
+                PICKLEBALL BESTIE
+            </a>
+            <ul class="nav-links">
+                <li><a href="fundamentals.html">Fundamentals</a></li>
+                <li><a href="spin-physics.html">Spin Physics</a></li>
+                <li><a href="paddle-guide.html">Paddle Guide</a></li>
+                <li><a href="#drills">Drills</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <h1>FUNDAMENTALS</h1>
+        <p>Master these skills in order. Primary skills win games. Secondary skills win tournaments.</p>
+    </div>
+
+    <div class="container">
+        <!-- PRIMARY SKILLS -->
+        <section class="section" id="primary">
+            <h2 class="section-title">Primary Skills</h2>
+            <p class="section-intro">
+                These five skills are non-negotiable. They separate recreational players from competitive ones. 
+                Focus on achieving 70%+ consistency with each before moving to secondary skills.
+            </p>
+
+            <div class="skill-grid">
+                <!-- Skill 1: Dinking -->
+                <div class="skill-card">
+                    <div class="skill-header">
+                        <div class="skill-number">1</div>
+                        <h3>Dinking Consistency</h3>
+                        <p>The foundation of competitive pickleball</p>
+                    </div>
+                    <div class="skill-body">
+                        <div class="why-critical">
+                            <h4>Why This Is Critical</h4>
+                            <p>The team that can dink consistently controls the pace. Dinking forces opponents to stay patient and creates opportunities when they pop the ball up. Most points at intermediate+ levels are won or lost during the dinking exchange.</p>
+                        </div>
+
+                        <div class="court-container">
+                            <svg class="court-svg" viewBox="0 0 400 500">
+                                <rect x="50" y="50" width="300" height="400" fill="#98d8c8" stroke="#1a1a1a" stroke-width="3"/>
+                                <line x1="50" y1="250" x2="350" y2="250" stroke="#1a1a1a" stroke-width="2"/>
+                                <rect x="50" y="50" width="300" height="70" fill="#00b894" fill-opacity="0.3" stroke="#00b894" stroke-width="2"/>
+                                <rect x="50" y="380" width="300" height="70" fill="#00b894" fill-opacity="0.3" stroke="#00b894" stroke-width="2"/>
+                                <text x="200" y="85" text-anchor="middle" font-size="14" fill="#1a1a1a" font-weight="bold">KITCHEN / NVZ</text>
+                                <text x="200" y="415" text-anchor="middle" font-size="14" fill="#1a1a1a" font-weight="bold">KITCHEN / NVZ</text>
+                                <circle cx="200" cy="140" r="15" fill="#2d3436"/>
+                                <circle cx="200" cy="360" r="15" fill="#636e72"/>
+                                <path d="M 200 140 Q 200 220 200 360" fill="none" stroke="#d4ff00" stroke-width="4" stroke-dasharray="6,4"/>
+                                <circle cx="200" cy="140" r="6" fill="#d4ff00"/>
+                                <circle cx="200" cy="360" r="6" fill="#d4ff00"/>
+                                <line x1="50" y1="250" x2="350" y2="250" stroke="#1a1a1a" stroke-width="5"/>
+                            </svg>
+                        </div>
+
+                        <div class="key-points">
+                            <h4>Key Points</h4>
+                            <ul>
+                                <li><strong>Height control:</strong> Keep the ball just 6-12 inches over the net</li>
+                                <li><strong>Landing zone:</strong> Target opponent's kitchen consistently</li>
+                                <li><strong>Soft hands:</strong> Absorb pace, don't add it</li>
+                                <li><strong>Patience:</strong> Wait for your opponent's mistake rather than forcing winners</li>
+                                <li><strong>Footwork first:</strong> Position determines control more than paddle technique</li>
+                            </ul>
+                        </div>
+
+                        <div class="practice-drill">
+                            <h4>🎯 Practice Drill</h4>
+                            <p><strong>Cooperative Dinking:</strong> With a partner, aim for 20+ consecutive dinks without errors. Start stationary, then add lateral movement. Track your longest streak. Advanced: Add crosscourt angles and varying depths within the kitchen.</p>
+                        </div>
+
+                        <div class="watch-out">
+                            <h4>⚠️ Watch Out For</h4>
+                            <ul>
+                                <li>Hitting too hard - most dinking errors come from adding pace</li>
+                                <li>Standing too far back - you should be just behind the kitchen line</li>
+                                <li>Looking at the paddle - watch the ball all the way to contact</li>
+                                <li>Trying to end points too early - the best dink is the one that comes back</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Skill 2: Third Shot Drop -->
+                <div class="skill-card">
+                    <div class="skill-header">
+                        <div class="skill-number">2</div>
+                        <h3>Third Shot Drop</h3>
+                        <p>The transition from defense to offense</p>
+                    </div>
+                    <div class="skill-body">
+                        <div class="why-critical">
+                            <h4>Why This Is Critical</h4>
+                            <p>After serving, you're at the baseline while opponents are at the kitchen. The third shot drop neutralizes this disadvantage by landing softly in their kitchen, preventing attacks and allowing you to advance. This is the skill that separates beginners from intermediate players.</p>
+                        </div>
+
+                        <div class="court-container">
+                            <svg class="court-svg" viewBox="0 0 400 500">
+                                <rect x="50" y="50" width="300" height="400" fill="#98d8c8" stroke="#1a1a1a" stroke-width="3"/>
+                                <line x1="50" y1="250" x2="350" y2="250" stroke="#1a1a1a" stroke-width="2"/>
+                                <rect x="50" y="50" width="300" height="70" fill="#00b894" fill-opacity="0.3" stroke="#00b894" stroke-width="2"/>
+                                <rect x="50" y="380" width="300" height="70" fill="#00b894" fill-opacity="0.3" stroke="#00b894" stroke-width="2"/>
+                                <line x1="50" y1="250" x2="350" y2="250" stroke="#1a1a1a" stroke-width="5"/>
+                                <circle cx="170" cy="130" r="12" fill="#636e72"/>
+                                <circle cx="230" cy="130" r="12" fill="#636e72"/>
+                                <circle cx="200" cy="430" r="15" fill="#2d3436"/>
+                                <path d="M 200 430 Q 200 300 190 100" fill="none" stroke="#d4ff00" stroke-width="5"/>
+                                <circle cx="200" cy="430" r="7" fill="#d4ff00"/>
+                                <circle cx="190" cy="100" r="7" fill="#d4ff00"/>
+                                <text x="140" y="290" font-size="16" fill="#d4ff00" font-weight="bold">HIGH ARC</text>
+                                <path d="M 200 415 L 200 350" fill="none" stroke="#00b894" stroke-width="4" stroke-dasharray="6,4" marker-end="url(#arrow)"/>
+                                <defs>
+                                    <marker id="arrow" markerWidth="10" markerHeight="10" refX="5" refY="3" orient="auto">
+                                        <path d="M0,0 L0,6 L9,3 z" fill="#00b894" />
+                                    </marker>
+                                </defs>
+                                <text x="220" y="380" font-size="13" fill="#00b894" font-weight="bold">Advance</text>
+                            </svg>
+                        </div>
+
+                        <div class="key-points">
+                            <h4>Key Points</h4>
+                            <ul>
+                                <li><strong>Arc trajectory:</strong> Ball should peak well above the net (think rainbow)</li>
+                                <li><strong>Contact point:</strong> Hit when the ball is dropping, below waist level</li>
+                                <li><strong>Paddle face:</strong> Slightly open, lifting through the ball</li>
+                                <li><strong>Target zone:</strong> Land in opponent's kitchen, ideally mid-court depth</li>
+                                <li><strong>Follow through:</strong> Move forward immediately after hitting</li>
+                            </ul>
+                        </div>
+
+                        <div class="practice-drill">
+                            <h4>🎯 Practice Drill</h4>
+                            <p><strong>Baseline Drop Reps:</strong> Stand at baseline with bucket of balls. Practice 50 drops, focusing on consistent arc height. Mark success rate. Advanced: Have partner at net hit your drops back for continuous rally practice.</p>
+                        </div>
+
+                        <div class="watch-out">
+                            <h4>⚠️ Watch Out For</h4>
+                            <ul>
+                                <li>Hitting too flat - needs upward arc to clear net and drop into kitchen</li>
+                                <li>Too much pace - this is a touch shot, not a power shot</li>
+                                <li>Not moving forward after hitting - you must close to the kitchen</li>
+                                <li>Giving up after one miss - be ready to hit 2-3 drops in sequence</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Skill 3: Positioning -->
+                <div class="skill-card">
+                    <div class="skill-header">
+                        <div class="skill-number">3</div>
+                        <h3>Kitchen Line Position & Movement</h3>
+                        <p>Court position is half the game</p>
+                    </div>
+                    <div class="skill-body">
+                        <div class="why-critical">
+                            <h4>Why This Is Critical</h4>
+                            <p>The kitchen line is the strongest position in pickleball. It gives you offensive angles and lets you cut off balls early. Moving in sync with your partner prevents gaps. Players who retreat unnecessarily get punished.</p>
+                        </div>
+
+                        <div class="court-container">
+                            <svg class="court-svg" viewBox="0 0 400 500">
+                                <rect x="50" y="50" width="300" height="400" fill="#98d8c8" stroke="#1a1a1a" stroke-width="3"/>
+                                <line x1="50" y1="250" x2="350" y2="250" stroke="#1a1a1a" stroke-width="2"/>
+                                <line x1="200" y1="50" x2="200" y2="450" stroke="#1a1a1a" stroke-width="2" stroke-dasharray="10,5"/>
+                                <rect x="50" y="50" width="300" height="70" fill="#00b894" fill-opacity="0.3" stroke="#00b894" stroke-width="2"/>
+                                <rect x="50" y="380" width="300" height="70" fill="#00b894" fill-opacity="0.3" stroke="#00b894" stroke-width="2"/>
+                                <line x1="50" y1="380" x2="350" y2="380" stroke="#d4ff00" stroke-width="8"/>
+                                <text x="200" y="365" text-anchor="middle" font-size="15" fill="#1a1a1a" font-weight="bold">IDEAL POSITION</text>
+                                <line x1="50" y1="250" x2="350" y2="250" stroke="#1a1a1a" stroke-width="5"/>
+                                <circle cx="150" cy="385" r="15" fill="#00b894"/>
+                                <circle cx="250" cy="385" r="15" fill="#00b894"/>
+                                <text x="200" y="430" text-anchor="middle" font-size="13" fill="#00b894" font-weight="bold">✓ PARALLEL POSITIONING</text>
+                                <path d="M 120 385 L 80 385" stroke="#d4ff00" stroke-width="3" marker-end="url(#arrowgreen)"/>
+                                <path d="M 280 385 L 320 385" stroke="#d4ff00" stroke-width="3" marker-end="url(#arrowgreen)"/>
+                                <defs>
+                                    <marker id="arrowgreen" markerWidth="10" markerHeight="10" refX="5" refY="3" orient="auto">
+                                        <path d="M0,0 L0,6 L9,3 z" fill="#d4ff00" />
+                                    </marker>
+                                </defs>
+                            </svg>
+                        </div>
+
+                        <div class="key-points">
+                            <h4>Key Points</h4>
+                            <ul>
+                                <li><strong>Distance from line:</strong> 1-2 feet behind kitchen line, not in it</li>
+                                <li><strong>Partner sync:</strong> Move together laterally - stay roughly parallel</li>
+                                <li><strong>Ball follows you:</strong> When ball goes to one side, both players shift</li>
+                                <li><strong>Hold your ground:</strong> Don't back up unless ball is overhead</li>
+                                <li><strong>Split step:</strong> Small hop as opponent contacts to be ready for any direction</li>
+                            </ul>
+                        </div>
+
+                        <div class="practice-drill">
+                            <h4>🎯 Practice Drill</h4>
+                            <p><strong>Shadow Movement:</strong> With your partner, practice moving side-to-side without a ball. Call out "together!" as you shift. Video record to verify you're actually staying parallel. Advanced: Add random feeds to react to while maintaining sync.</p>
+                        </div>
+
+                        <div class="watch-out">
+                            <h4>⚠️ Watch Out For</h4>
+                            <ul>
+                                <li>One player advancing while partner stays back - creates exploitable gap</li>
+                                <li>Backing up on hard shots - hold the line and reset instead</li>
+                                <li>Standing too close to partner - need 8-10 feet between you</li>
+                                <li>Flat-footed stance - stay on balls of feet, ready to move</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Skill 4: Soft Hands -->
+                <div class="skill-card">
+                    <div class="skill-header">
+                        <div class="skill-number">4</div>
+                        <h3>Soft Hands / Touch</h3>
+                        <p>Control pace, don't create it</p>
+                    </div>
+                    <div class="skill-body">
+                        <div class="why-critical">
+                            <h4>Why This Is Critical</h4>
+                            <p>Soft hands enable dinks, resets, and drops - three of the most important shots. Players who can only hit hard are limited to banging. Players with touch control the pace, neutralize attacks, and create winning opportunities through placement.</p>
+                        </div>
+
+                        <div class="key-points">
+                            <h4>Key Points</h4>
+                            <ul>
+                                <li><strong>Grip pressure:</strong> Hold like a bird - firm enough not to drop, loose enough not to crush</li>
+                                <li><strong>Wrist give:</strong> Let wrist "give" slightly on contact to absorb pace</li>
+                                <li><strong>Compact swings:</strong> Shorter backswing = more control</li>
+                                <li><strong>Paddle stability:</strong> Keep paddle face stable through contact zone</li>
+                                <li><strong>Feel the ball:</strong> Maximize contact time - "catch and release" not "hit"</li>
+                            </ul>
+                        </div>
+
+                        <div class="practice-drill">
+                            <h4>🎯 Practice Drill</h4>
+                            <p><strong>Reset Practice:</strong> Have partner drive balls at you with pace from baseline. Practice "resetting" them softly into the kitchen. Focus on feeling the ball stay on your paddle longer. Track success rate. Advanced: Reset while moving laterally.</p>
+                        </div>
+
+                        <div class="watch-out">
+                            <h4>⚠️ Watch Out For</h4>
+                            <ul>
+                                <li>Death grip on paddle - tension kills touch</li>
+                                <li>Rigid wrist - needs to be firm but not locked</li>
+                                <li>Big backswing - reduces control and reaction time</li>
+                                <li>Pushing at the ball - think absorption, not deflection</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Skill 5: Return of Serve -->
+                <div class="skill-card">
+                    <div class="skill-header">
+                        <div class="skill-number">5</div>
+                        <h3>Return of Serve Depth</h3>
+                        <p>Set up every point for success</p>
+                    </div>
+                    <div class="skill-body">
+                        <div class="why-critical">
+                            <h4>Why This Is Critical</h4>
+                            <p>A weak return puts you immediately on defense. The serving team can attack or easily advance. A deep return forces them to stay back and hit a third shot drop, neutralizing their serve advantage and giving you control of the point.</p>
+                        </div>
+
+                        <div class="court-container">
+                            <svg class="court-svg" viewBox="0 0 400 500">
+                                <rect x="50" y="50" width="300" height="400" fill="#98d8c8" stroke="#1a1a1a" stroke-width="3"/>
+                                <line x1="50" y1="250" x2="350" y2="250" stroke="#1a1a1a" stroke-width="2"/>
+                                <line x1="200" y1="50" x2="200" y2="450" stroke="#1a1a1a" stroke-width="2" stroke-dasharray="10,5"/>
+                                <rect x="50" y="50" width="300" height="70" fill="#00b894" fill-opacity="0.3" stroke="#00b894" stroke-width="2"/>
+                                <rect x="50" y="380" width="300" height="70" fill="#00b894" fill-opacity="0.3" stroke="#00b894" stroke-width="2"/>
+                                <rect x="50" y="50" width="300" height="60" fill="#d4ff00" fill-opacity="0.5"/>
+                                <text x="200" y="75" text-anchor="middle" font-size="14" fill="#1a1a1a" font-weight="bold">TARGET: DEEP</text>
+                                <rect x="50" y="120" width="300" height="50" fill="#dc3545" fill-opacity="0.3"/>
+                                <text x="200" y="145" text-anchor="middle" font-size="12" fill="#721c24" font-weight="bold">AVOID: SHORT</text>
+                                <line x1="50" y1="250" x2="350" y2="250" stroke="#1a1a1a" stroke-width="5"/>
+                                <circle cx="200" cy="410" r="15" fill="#2d3436"/>
+                                <circle cx="250" cy="90" r="12" fill="#636e72"/>
+                                <path d="M 200 410 Q 200 300 245 90" fill="none" stroke="#d4ff00" stroke-width="5"/>
+                                <circle cx="245" cy="90" r="7" fill="#d4ff00"/>
+                            </svg>
+                        </div>
+
+                        <div class="key-points">
+                            <h4>Key Points</h4>
+                            <ul>
+                                <li><strong>Target zone:</strong> Back third of court, near baseline</li>
+                                <li><strong>Controlled aggression:</strong> Enough pace for depth, not so much you lose control</li>
+                                <li><strong>Depth > placement:</strong> Deep anywhere beats short anywhere</li>
+                                <li><strong>Move forward:</strong> Immediately advance to kitchen after returning</li>
+                                <li><strong>High percentage:</strong> Consistency matters more than aces</li>
+                            </ul>
+                        </div>
+
+                        <div class="practice-drill">
+                            <h4>🎯 Practice Drill</h4>
+                            <p><strong>Target Practice:</strong> Place cones or targets in back third of court. Practice 50 returns, tracking how many land in target zone. Aim for 70%+ deep. Advanced: Have server vary serves to practice adapting contact point.</p>
+                        </div>
+
+                        <div class="watch-out">
+                            <h4>⚠️ Watch Out For</h4>
+                            <ul>
+                                <li>Hitting too short - gives opponents easy third shot attacks</li>
+                                <li>Going for too much - winners from return are low percentage</li>
+                                <li>Poor footwork to the ball - rushing or reaching reduces control</li>
+                                <li>Not moving forward after - you need to get to kitchen immediately</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECONDARY SKILLS -->
+        <section class="section" id="secondary">
+            <h2 class="section-title">Secondary Skills</h2>
+            <p class="section-intro">
+                These skills elevate your game once primary skills are solid (70%+ consistency). 
+                They add variety, power, and tactical options but won't help if fundamentals are weak.
+            </p>
+
+            <div class="skill-grid">
+                <!-- Secondary Skill 1 -->
+                <div class="skill-card">
+                    <div class="skill-header">
+                        <h3>Serve Placement & Variation</h3>
+                        <p>Start points on your terms</p>
+                    </div>
+                    <div class="skill-body">
+                        <p style="margin-bottom: 20px;">A mediocre serve with good positioning beats a great serve with poor follow-up. But once your fundamentals are solid, serve variety keeps opponents guessing and can create immediate advantages.</p>
+                        
+                        <div class="key-points">
+                            <h4>Key Variations</h4>
+                            <ul>
+                                <li><strong>Deep to backhand:</strong> Most players' weaker side</li>
+                                <li><strong>Body serve:</strong> Jams opponent, limits options</li>
+                                <li><strong>Short angle serve:</strong> Pulls opponent wide</li>
+                                <li><strong>Pace variation:</strong> Mix hard and soft serves</li>
+                            </ul>
+                        </div>
+
+                        <div class="practice-drill">
+                            <h4>🎯 Practice Drill</h4>
+                            <p>Place targets in different serve zones. Practice 10 serves to each target. Track accuracy by zone. Mix up pace and spin on each serve type.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Secondary Skill 2 -->
+                <div class="skill-card">
+                    <div class="skill-header">
+                        <h3>Speedups & Counters</h3>
+                        <p>Recognize and attack high balls</p>
+                    </div>
+                    <div class="skill-body">
+                        <p style="margin-bottom: 20px;">When opponents pop the ball up above net level, you need to punish it. Speedups (attacking high balls with pace) and counters (defending against them) are critical for advanced play.</p>
+                        
+                        <div class="key-points">
+                            <h4>Speedup Principles</h4>
+                            <ul>
+                                <li><strong>Target feet:</strong> Aim at opponent's feet or body</li>
+                                <li><strong>Downward angle:</strong> Hit down on the ball</li>
+                                <li><strong>Quick hands:</strong> Short, punchy swing</li>
+                                <li><strong>Stay balanced:</strong> Don't overswing and fall into kitchen</li>
+                            </ul>
+                        </div>
+
+                        <div class="watch-out">
+                            <h4>⚠️ Watch Out For</h4>
+                            <ul>
+                                <li>Attacking balls that aren't truly high - patience is key</li>
+                                <li>Hitting too hard and losing control</li>
+                                <li>Failing to reset when the speedup comes back</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Secondary Skill 3 -->
+                <div class="skill-card">
+                    <div class="skill-header">
+                        <h3>Lobs</h3>
+                        <p>Tactical weapon for court reset</p>
+                    </div>
+                    <div class="skill-body">
+                        <p style="margin-bottom: 20px;">A well-timed lob forces aggressive opponents back, gives you time to reset position, and can win points outright. But overuse signals weak fundamentals.</p>
+                        
+                        <div class="key-points">
+                            <h4>When to Lob</h4>
+                            <ul>
+                                <li><strong>Opponents crowding:</strong> Leaning in aggressively</li>
+                                <li><strong>Out of position:</strong> You need time to recover</li>
+                                <li><strong>Wind at your back:</strong> Environmental advantage</li>
+                                <li><strong>Tactical surprise:</strong> Once per game maximum for effect</li>
+                            </ul>
+                        </div>
+
+                        <div class="watch-out">
+                            <h4>⚠️ Watch Out For</h4>
+                            <ul>
+                                <li>Lobbing too often - becomes predictable and signals weakness</li>
+                                <li>Lobbing too short - easy overhead for opponents</li>
+                                <li>Not moving back immediately after lobbing</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Secondary Skill 4 -->
+                <div class="skill-card">
+                    <div class="skill-header">
+                        <h3>Erne & Around-the-Post (ATP)</h3>
+                        <p>Advanced positioning plays</p>
+                    </div>
+                    <div class="skill-body">
+                        <p style="margin-bottom: 20px;">Erne: jumping around the kitchen to volley a crosscourt ball. ATP: running wide to hit a ball around the post. Both are flashy but situational - effective maybe once per match.</p>
+                        
+                        <div class="key-points">
+                            <h4>Execution Requirements</h4>
+                            <ul>
+                                <li><strong>Erne timing:</strong> Must jump from outside kitchen, land outside kitchen</li>
+                                <li><strong>ATP angle:</strong> Ball must be hit outside the court sideline</li>
+                                <li><strong>Risk assessment:</strong> Only attempt when success probability is high</li>
+                                <li><strong>Recovery:</strong> Be able to get back to position after</li>
+                            </ul>
+                        </div>
+
+                        <div class="watch-out">
+                            <h4>⚠️ Watch Out For</h4>
+                            <ul>
+                                <li>Kitchen violations on Erne - extremely common error</li>
+                                <li>Attempting when fundamentals aren't solid - style over substance</li>
+                                <li>Leaving partner vulnerable while attempting</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Secondary Skill 5 -->
+                <div class="skill-card">
+                    <div class="skill-header">
+                        <h3>Spin Serves</h3>
+                        <p>Legal again, but use judiciously</p>
+                    </div>
+                    <div class="skill-body">
+                        <p style="margin-bottom: 20px;">Topspin and slice serves are legal again. They can be effective but require significant practice. Most players overinvest here relative to the fundamentals that actually win games.</p>
+                        
+                        <div class="key-points">
+                            <h4>Spin Options</h4>
+                            <ul>
+                                <li><strong>Topspin serve:</strong> Kicks up and forward after bounce</li>
+                                <li><strong>Slice serve:</strong> Curves away and stays low</li>
+                                <li><strong>Both require:</strong> Consistent ball toss and clean contact</li>
+                                <li><strong>Trade-off:</strong> Spin reduces control initially</li>
+                            </ul>
+                        </div>
+
+                        <div class="practice-drill">
+                            <h4>🎯 Practice Drill</h4>
+                            <p>Master a flat, consistent serve first (90%+ in). Then dedicate separate practice sessions to spin serves. Don't mix during game practice until spin serves are also 80%+ consistent.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
