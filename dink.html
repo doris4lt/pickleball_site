@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pickleball Dinking Consistency - Isometric View</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #1a1a1a;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+        canvas {
+            display: block;
+            touch-action: none;
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="gameCanvas"></canvas>
+
+<script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let width, height;
+    const courtColor = '#2d5a27';
+    const kitchenColor = '#3a7a33';
+    
+    let traces = []; 
+    let ripples = [];
+
+    // Isometric Projection Logic
+    function project(x, y, z = 0) {
+        const isoX = (x - y) * Math.cos(Math.PI / 6);
+        const isoY = (x + y) * Math.sin(Math.PI / 6) - z;
+        return {
+            x: width / 2 + isoX,
+            y: height / 2 + isoY - 50 
+        };
+    }
+
+    const ball = {
+        x: 0, y: 0, z: 0,
+        startX: 0, startY: 0,
+        bounceX: 0, bounceY: 0,
+        targetX: 0, targetY: 0,
+        progress: 1,
+        speed: 0.018,
+        radius: 6,
+        color: '#efff00',
+        state: 'flying',
+        tNet: 0.5,
+        peakZ: 50
+    };
+
+    // PROPORTIONAL DIMENSIONS
+    // Kitchen (NVZ) = 7ft, Service Box = 15ft. Total half court = 22ft.
+    // Using a scale factor of ~9 to fit the screen.
+    const kitchenLen = 63; // 7 * 9
+    const serviceLen = 135; // 15 * 9
+    const courtHalfLen = kitchenLen + serviceLen; // 198 (Total 22ft equivalent)
+    const courtWidth = 90; // 10ft half-width (Total 20ft width)
+    const netHeight = 32; // ~36 inches equivalent
+
+    const paddles = {
+        top: { x: 0, y: 0, targetX: 0, currentX: 0, yPos: -kitchenLen - 10 },
+        bottom: { x: 0, y: 0, targetX: 0, currentX: 0, yPos: kitchenLen + 10 }
+    };
+
+    function init() {
+        resize();
+        resetBall();
+        animate();
+    }
+
+    function resize() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+    }
+
+    function resetBall() {
+        ball.x = 0;
+        ball.y = paddles.bottom.yPos;
+        ball.progress = 1;
+        planNextShot();
+    }
+
+    function planNextShot() {
+        traces = [];
+        ball.startX = ball.x;
+        ball.startY = ball.y;
+        ball.progress = 0;
+        ball.state = 'flying';
+        
+        const isBottomTurning = ball.startY > 0;
+        const nextYDir = isBottomTurning ? -1 : 1;
+        
+        // Bounce point: Landing deep in opponent's kitchen (between net and NVZ line)
+        ball.bounceX = (Math.random() - 0.5) * courtWidth * 1.6;
+        ball.bounceY = nextYDir * (Math.random() * (kitchenLen - 20) + 10);
+
+        // Paddle contact point: Just behind the NVZ line
+        const nextSide = isBottomTurning ? 'top' : 'bottom';
+        const opponentKitchenLineY = nextYDir * (kitchenLen + 12);
+        
+        ball.targetX = ball.bounceX + (ball.bounceX - ball.startX) * 0.2;
+        ball.targetY = opponentKitchenLineY;
+
+        // MATH: Calculate t at net crossing (y=0)
+        ball.tNet = Math.abs(ball.startY) / (Math.abs(ball.startY) + Math.abs(ball.bounceY));
+        
+        // Ensure z > netHeight at tNet with a quadratic arc
+        const minH = (netHeight + 12) / (4 * ball.tNet * (1 - ball.tNet));
+        ball.peakZ = Math.max(minH, 45);
+
+        paddles[nextSide].targetX = ball.targetX;
+    }
+
+    function drawCourt() {
+        ctx.fillStyle = '#111';
+        ctx.fillRect(0, 0, width, height);
+
+        const p1 = project(-courtWidth, -courtHalfLen);
+        const p2 = project(courtWidth, -courtHalfLen);
+        const p3 = project(courtWidth, courtHalfLen);
+        const p4 = project(-courtWidth, courtHalfLen);
+
+        // Main Court Green
+        ctx.fillStyle = courtColor;
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.lineTo(p3.x, p3.y);
+        ctx.lineTo(p4.x, p4.y);
+        ctx.closePath();
+        ctx.fill();
+
+        // Kitchen (NVZ) Green
+        const drawKitchen = (yStart, yEnd) => {
+            const k1 = project(-courtWidth, yStart);
+            const k2 = project(courtWidth, yStart);
+            const k3 = project(courtWidth, yEnd);
+            const k4 = project(-courtWidth, yEnd);
+            ctx.fillStyle = kitchenColor;
+            ctx.beginPath();
+            ctx.moveTo(k1.x, k1.y);
+            ctx.lineTo(k2.x, k2.y);
+            ctx.lineTo(k3.x, k3.y);
+            ctx.lineTo(k4.x, k4.y);
+            ctx.closePath();
+            ctx.fill();
+        };
+        drawKitchen(-kitchenLen, 0);
+        drawKitchen(0, kitchenLen);
+
+        // Lines
+        ctx.strokeStyle = 'white';
+        ctx.lineWidth = 2;
+        
+        // Perimeter
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y); ctx.lineTo(p2.x, p2.y); ctx.lineTo(p3.x, p3.y); ctx.lineTo(p4.x, p4.y); ctx.closePath();
+        ctx.stroke();
+
+        // Kitchen Lines (NVZ lines)
+        const kl1 = project(-courtWidth, -kitchenLen);
+        const kl2 = project(courtWidth, -kitchenLen);
+        ctx.beginPath(); ctx.moveTo(kl1.x, kl1.y); ctx.lineTo(kl2.x, kl2.y); ctx.stroke();
+        
+        const kl3 = project(-courtWidth, kitchenLen);
+        const kl4 = project(courtWidth, kitchenLen);
+        ctx.beginPath(); ctx.moveTo(kl3.x, kl3.y); ctx.lineTo(kl4.x, kl4.y); ctx.stroke();
+
+        // Service Box Center Lines
+        const scl1 = project(0, -kitchenLen);
+        const scl2 = project(0, -courtHalfLen);
+        ctx.beginPath(); ctx.moveTo(scl1.x, scl1.y); ctx.lineTo(scl2.x, scl2.y); ctx.stroke();
+
+        const scl3 = project(0, kitchenLen);
+        const scl4 = project(0, courtHalfLen);
+        ctx.beginPath(); ctx.moveTo(scl3.x, scl3.y); ctx.lineTo(scl4.x, scl4.y); ctx.stroke();
+    }
+
+    function drawNet() {
+        const xStart = -courtWidth - 10;
+        const xEnd = courtWidth + 10;
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
+        ctx.lineWidth = 1;
+        for (let x = xStart; x <= xEnd; x += 10) {
+            const bot = project(x, 0, 0);
+            const top = project(x, 0, netHeight);
+            ctx.beginPath(); ctx.moveTo(bot.x, bot.y); ctx.lineTo(top.x, top.y); ctx.stroke();
+        }
+        for (let z = 0; z <= netHeight; z += 8) {
+            const left = project(xStart, 0, z);
+            const right = project(xEnd, 0, z);
+            ctx.beginPath(); ctx.moveTo(left.x, left.y); ctx.lineTo(right.x, right.y); ctx.stroke();
+        }
+        const n1t = project(xStart, 0, netHeight);
+        const n2t = project(xEnd, 0, netHeight);
+        ctx.strokeStyle = 'white';
+        ctx.lineWidth = 3;
+        ctx.beginPath(); ctx.moveTo(n1t.x, n1t.y); ctx.lineTo(n2t.x, n2t.y); ctx.stroke();
+        const n1b = project(xStart, 0, 0);
+        const n2b = project(xEnd, 0, 0);
+        ctx.lineWidth = 5;
+        ctx.beginPath(); ctx.moveTo(n1b.x, n1b.y); ctx.lineTo(n1t.x, n1t.y); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(n2b.x, n2b.y); ctx.lineTo(n2t.x, n2t.y); ctx.stroke();
+    }
+
+    function drawRipples() {
+        ripples.forEach((r, i) => {
+            const p = project(r.x, r.y);
+            ctx.strokeStyle = `rgba(255, 255, 255, ${r.alpha})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.ellipse(p.x, p.y, r.s, r.s/2, 0, 0, Math.PI * 2);
+            ctx.stroke();
+            r.s += 1; r.alpha -= 0.03;
+            if (r.alpha <= 0) ripples.splice(i, 1);
+        });
+    }
+
+    function drawTraces() {
+        if (traces.length < 2) return;
+        ctx.strokeStyle = 'rgba(239, 255, 0, 0.4)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        const start = project(traces[0].x, traces[0].y, traces[0].z);
+        ctx.moveTo(start.x, start.y);
+        for (let i = 1; i < traces.length; i++) {
+            const p = project(traces[i].x, traces[i].y, traces[i].z);
+            ctx.lineTo(p.x, p.y);
+        }
+        ctx.stroke();
+    }
+
+    function drawPaddle(side) {
+        const p = paddles[side];
+        p.currentX += (p.targetX - p.currentX) * 0.15;
+        const pos = project(p.currentX, p.yPos, 15); 
+        ctx.save();
+        ctx.translate(pos.x, pos.y);
+        ctx.fillStyle = side === 'top' ? '#3b82f6' : '#ef4444';
+        ctx.beginPath(); ctx.roundRect(-10, -15, 20, 30, 5); ctx.fill();
+        ctx.strokeStyle = 'white'; ctx.lineWidth = 1; ctx.stroke();
+        ctx.fillStyle = '#444'; ctx.fillRect(-2, (side === 'top' ? -25 : 15), 4, 10);
+        ctx.restore();
+    }
+
+    function update() {
+        if (ball.progress < 1) {
+            ball.progress += ball.speed;
+            const bounceThreshold = 0.72;
+
+            if (ball.state === 'flying' && ball.progress >= bounceThreshold) {
+                ball.state = 'rebounding';
+                ripples.push({ x: ball.bounceX, y: ball.bounceY, s: 2, alpha: 1 });
+            }
+
+            if (ball.progress >= 1) {
+                ball.progress = 1;
+                planNextShot();
+            }
+
+            if (ball.state === 'flying') {
+                const t = ball.progress / bounceThreshold;
+                ball.x = ball.startX + (ball.bounceX - ball.startX) * t;
+                ball.y = ball.startY + (ball.bounceY - ball.startY) * t;
+                ball.z = 4 * ball.peakZ * t * (1 - t);
+            } else {
+                const t = (ball.progress - bounceThreshold) / (1 - bounceThreshold);
+                ball.x = ball.bounceX + (ball.targetX - ball.bounceX) * t;
+                ball.y = ball.bounceY + (ball.targetY - ball.bounceY) * t;
+                ball.z = Math.sin(t * (Math.PI / 2)) * 15; 
+            }
+            traces.push({ x: ball.x, y: ball.y, z: ball.z });
+        }
+    }
+
+    function drawBall() {
+        const shadowPos = project(ball.x, ball.y, 0);
+        const ballPos = project(ball.x, ball.y, ball.z);
+        ctx.fillStyle = 'rgba(0,0,0,0.2)';
+        ctx.beginPath(); ctx.ellipse(shadowPos.x, shadowPos.y, 6, 3, 0, 0, Math.PI * 2); ctx.fill();
+        const size = ball.radius + (ball.z * 0.05);
+        const grad = ctx.createRadialGradient(ballPos.x - 2, ballPos.y - 2, 1, ballPos.x, ballPos.y, size);
+        grad.addColorStop(0, '#ffffaa'); grad.addColorStop(1, ball.color);
+        ctx.fillStyle = grad; ctx.beginPath(); ctx.arc(ballPos.x, ballPos.y, size, 0, Math.PI * 2); ctx.fill();
+    }
+
+    function animate() {
+        drawCourt();
+        drawRipples();
+        drawTraces();
+        drawNet();
+        drawPaddle('top');
+        drawPaddle('bottom');
+        update();
+        drawBall();
+        requestAnimationFrame(animate);
+    }
+
+    window.addEventListener('resize', resize);
+    window.onload = init;
+</script>
+</body>
+</html>

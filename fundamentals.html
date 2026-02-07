@@ -13,7 +13,7 @@
     <nav>
         <div class="nav-container">
             <a href="index.html" class="logo">
-                <div class="logo-ball"></div>
+                <img class="logo-ball" src="pickleball.svg" alt="">
                 PICKLEBALL BESTIE
             </a>
             <button class="hamburger" aria-label="Toggle navigation">
@@ -25,7 +25,7 @@
                 <li><a href="fundamentals.html">Fundamentals</a></li>
                 <li><a href="spin-physics.html">Spin Physics</a></li>
                 <li><a href="paddle-guide.html">Paddle Guide</a></li>
-                <li><a href="#drills">Drills</a></li>
+                <li><a href="drills.html">Drills</a></li>
             </ul>
         </div>
     </nav>
@@ -46,7 +46,7 @@
 
             <div class="skill-grid">
                 <!-- Skill 1: Dinking -->
-                <div class="skill-card">
+                <div class="skill-card" id="skill-dinking">
                     <div class="skill-header">
                         <div class="skill-number">1</div>
                         <h3>Dinking Consistency</h3>
@@ -58,22 +58,7 @@
                             <p>The team that can dink consistently controls the pace. Dinking forces opponents to stay patient and creates opportunities when they pop the ball up. Most points at intermediate+ levels are won or lost during the dinking exchange.</p>
                         </div>
 
-                        <div class="court-container">
-                            <svg class="court-svg" viewBox="0 0 400 500">
-                                <rect x="50" y="50" width="300" height="400" fill="#98d8c8" stroke="#1a1a1a" stroke-width="3"/>
-                                <line x1="50" y1="250" x2="350" y2="250" stroke="#1a1a1a" stroke-width="2"/>
-                                <rect x="50" y="50" width="300" height="70" fill="#00b894" fill-opacity="0.3" stroke="#00b894" stroke-width="2"/>
-                                <rect x="50" y="380" width="300" height="70" fill="#00b894" fill-opacity="0.3" stroke="#00b894" stroke-width="2"/>
-                                <text x="200" y="85" text-anchor="middle" font-size="14" fill="#1a1a1a" font-weight="bold">KITCHEN / NVZ</text>
-                                <text x="200" y="415" text-anchor="middle" font-size="14" fill="#1a1a1a" font-weight="bold">KITCHEN / NVZ</text>
-                                <circle cx="200" cy="140" r="15" fill="#2d3436"/>
-                                <circle cx="200" cy="360" r="15" fill="#636e72"/>
-                                <path d="M 200 140 Q 200 220 200 360" fill="none" stroke="#d4ff00" stroke-width="4" stroke-dasharray="6,4"/>
-                                <circle cx="200" cy="140" r="6" fill="#d4ff00"/>
-                                <circle cx="200" cy="360" r="6" fill="#d4ff00"/>
-                                <line x1="50" y1="250" x2="350" y2="250" stroke="#1a1a1a" stroke-width="5"/>
-                            </svg>
-                        </div>
+                        <div id="dink-container" class="court-container"></div>
 
                         <div class="key-points">
                             <h4>Key Points</h4>
@@ -104,7 +89,7 @@
                 </div>
 
                 <!-- Skill 2: Third Shot Drop -->
-                <div class="skill-card">
+                <div class="skill-card" id="skill-third-shot-drop">
                     <div class="skill-header">
                         <div class="skill-number">2</div>
                         <h3>Third Shot Drop</h3>
@@ -116,29 +101,7 @@
                             <p>After serving, you're at the baseline while opponents are at the kitchen. The third shot drop neutralizes this disadvantage by landing softly in their kitchen, preventing attacks and allowing you to advance. This is the skill that separates beginners from intermediate players.</p>
                         </div>
 
-                        <div class="court-container">
-                            <svg class="court-svg" viewBox="0 0 400 500">
-                                <rect x="50" y="50" width="300" height="400" fill="#98d8c8" stroke="#1a1a1a" stroke-width="3"/>
-                                <line x1="50" y1="250" x2="350" y2="250" stroke="#1a1a1a" stroke-width="2"/>
-                                <rect x="50" y="50" width="300" height="70" fill="#00b894" fill-opacity="0.3" stroke="#00b894" stroke-width="2"/>
-                                <rect x="50" y="380" width="300" height="70" fill="#00b894" fill-opacity="0.3" stroke="#00b894" stroke-width="2"/>
-                                <line x1="50" y1="250" x2="350" y2="250" stroke="#1a1a1a" stroke-width="5"/>
-                                <circle cx="170" cy="130" r="12" fill="#636e72"/>
-                                <circle cx="230" cy="130" r="12" fill="#636e72"/>
-                                <circle cx="200" cy="430" r="15" fill="#2d3436"/>
-                                <path d="M 200 430 Q 200 300 190 100" fill="none" stroke="#d4ff00" stroke-width="5"/>
-                                <circle cx="200" cy="430" r="7" fill="#d4ff00"/>
-                                <circle cx="190" cy="100" r="7" fill="#d4ff00"/>
-                                <text x="140" y="290" font-size="16" fill="#d4ff00" font-weight="bold">HIGH ARC</text>
-                                <path d="M 200 415 L 200 350" fill="none" stroke="#00b894" stroke-width="4" stroke-dasharray="6,4" marker-end="url(#arrow)"/>
-                                <defs>
-                                    <marker id="arrow" markerWidth="10" markerHeight="10" refX="5" refY="3" orient="auto">
-                                        <path d="M0,0 L0,6 L9,3 z" fill="#00b894" />
-                                    </marker>
-                                </defs>
-                                <text x="220" y="380" font-size="13" fill="#00b894" font-weight="bold">Advance</text>
-                            </svg>
-                        </div>
+                        <div id="third-shot-container" class="court-container"></div>
 
                         <div class="key-points">
                             <h4>Key Points</h4>
@@ -169,7 +132,7 @@
                 </div>
 
                 <!-- Skill 3: Positioning -->
-                <div class="skill-card">
+                <div class="skill-card" id="skill-kitchen-line">
                     <div class="skill-header">
                         <div class="skill-number">3</div>
                         <h3>Kitchen Line Position & Movement</h3>
@@ -179,29 +142,6 @@
                         <div class="why-critical">
                             <h4>Why This Is Critical</h4>
                             <p>The kitchen line is the strongest position in pickleball. It gives you offensive angles and lets you cut off balls early. Moving in sync with your partner prevents gaps. Players who retreat unnecessarily get punished.</p>
-                        </div>
-
-                        <div class="court-container">
-                            <svg class="court-svg" viewBox="0 0 400 500">
-                                <rect x="50" y="50" width="300" height="400" fill="#98d8c8" stroke="#1a1a1a" stroke-width="3"/>
-                                <line x1="50" y1="250" x2="350" y2="250" stroke="#1a1a1a" stroke-width="2"/>
-                                <line x1="200" y1="50" x2="200" y2="450" stroke="#1a1a1a" stroke-width="2" stroke-dasharray="10,5"/>
-                                <rect x="50" y="50" width="300" height="70" fill="#00b894" fill-opacity="0.3" stroke="#00b894" stroke-width="2"/>
-                                <rect x="50" y="380" width="300" height="70" fill="#00b894" fill-opacity="0.3" stroke="#00b894" stroke-width="2"/>
-                                <line x1="50" y1="380" x2="350" y2="380" stroke="#d4ff00" stroke-width="8"/>
-                                <text x="200" y="365" text-anchor="middle" font-size="15" fill="#1a1a1a" font-weight="bold">IDEAL POSITION</text>
-                                <line x1="50" y1="250" x2="350" y2="250" stroke="#1a1a1a" stroke-width="5"/>
-                                <circle cx="150" cy="385" r="15" fill="#00b894"/>
-                                <circle cx="250" cy="385" r="15" fill="#00b894"/>
-                                <text x="200" y="430" text-anchor="middle" font-size="13" fill="#00b894" font-weight="bold">PARALLEL POSITIONING</text>
-                                <path d="M 120 385 L 80 385" stroke="#d4ff00" stroke-width="3" marker-end="url(#arrowgreen)"/>
-                                <path d="M 280 385 L 320 385" stroke="#d4ff00" stroke-width="3" marker-end="url(#arrowgreen)"/>
-                                <defs>
-                                    <marker id="arrowgreen" markerWidth="10" markerHeight="10" refX="5" refY="3" orient="auto">
-                                        <path d="M0,0 L0,6 L9,3 z" fill="#d4ff00" />
-                                    </marker>
-                                </defs>
-                            </svg>
                         </div>
 
                         <div class="key-points">
@@ -233,7 +173,7 @@
                 </div>
 
                 <!-- Skill 4: Soft Hands -->
-                <div class="skill-card">
+                <div class="skill-card" id="skill-soft-hands">
                     <div class="skill-header">
                         <div class="skill-number">4</div>
                         <h3>Soft Hands / Touch</h3>
@@ -274,7 +214,7 @@
                 </div>
 
                 <!-- Skill 5: Return of Serve -->
-                <div class="skill-card">
+                <div class="skill-card" id="skill-return-depth">
                     <div class="skill-header">
                         <div class="skill-number">5</div>
                         <h3>Return of Serve Depth</h3>
@@ -286,24 +226,7 @@
                             <p>A weak return puts you immediately on defense. The serving team can attack or easily advance. A deep return forces them to stay back and hit a third shot drop, neutralizing their serve advantage and giving you control of the point.</p>
                         </div>
 
-                        <div class="court-container">
-                            <svg class="court-svg" viewBox="0 0 400 500">
-                                <rect x="50" y="50" width="300" height="400" fill="#98d8c8" stroke="#1a1a1a" stroke-width="3"/>
-                                <line x1="50" y1="250" x2="350" y2="250" stroke="#1a1a1a" stroke-width="2"/>
-                                <line x1="200" y1="50" x2="200" y2="450" stroke="#1a1a1a" stroke-width="2" stroke-dasharray="10,5"/>
-                                <rect x="50" y="50" width="300" height="70" fill="#00b894" fill-opacity="0.3" stroke="#00b894" stroke-width="2"/>
-                                <rect x="50" y="380" width="300" height="70" fill="#00b894" fill-opacity="0.3" stroke="#00b894" stroke-width="2"/>
-                                <rect x="50" y="50" width="300" height="60" fill="#d4ff00" fill-opacity="0.5"/>
-                                <text x="200" y="75" text-anchor="middle" font-size="14" fill="#1a1a1a" font-weight="bold">TARGET: DEEP</text>
-                                <rect x="50" y="120" width="300" height="50" fill="#dc3545" fill-opacity="0.3"/>
-                                <text x="200" y="145" text-anchor="middle" font-size="12" fill="#721c24" font-weight="bold">AVOID: SHORT</text>
-                                <line x1="50" y1="250" x2="350" y2="250" stroke="#1a1a1a" stroke-width="5"/>
-                                <circle cx="200" cy="410" r="15" fill="#2d3436"/>
-                                <circle cx="250" cy="90" r="12" fill="#636e72"/>
-                                <path d="M 200 410 Q 200 300 245 90" fill="none" stroke="#d4ff00" stroke-width="5"/>
-                                <circle cx="245" cy="90" r="7" fill="#d4ff00"/>
-                            </svg>
-                        </div>
+                        <div id="deep-return-container" class="court-container"></div>
 
                         <div class="key-points">
                             <h4>Key Points</h4>
@@ -345,7 +268,7 @@
 
             <div class="skill-grid">
                 <!-- Secondary Skill 1 -->
-                <div class="skill-card">
+                <div class="skill-card" id="skill-serve-placement">
                     <div class="skill-header">
                         <h3>Serve Placement & Variation</h3>
                         <p>Start points on your terms</p>
@@ -495,5 +418,8 @@
             document.querySelector('.nav-links').classList.toggle('active');
         });
     </script>
+    <script src="dink-animation.js"></script>
+    <script src="third-shot-animation.js"></script>
+    <script src="deep-return-animation.js"></script>
 </body>
 </html>

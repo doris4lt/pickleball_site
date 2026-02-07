@@ -14,8 +14,8 @@
     --court-green: #00b894;
     --ball-yellow: #e8f442;
     --white: #ffffff;
-    --off-white: #f5f5f0;
-    --warm-gray: #edeee9;
+    --off-white: #f2f8fc;
+    --warm-gray: #e5eef5;
 
     /* Header palette — warmer mid-tones instead of pure black */
     --header-dark: #2c3639;
@@ -34,9 +34,9 @@
     --callout-warning-border: #e06c60;
     --callout-warning-text: #6b2520;
 
-    --callout-note-bg: #fef9ed;
-    --callout-note-border: #e5b84c;
-    --callout-note-text: #5c4813;
+    --callout-note-bg: #eef6fc;
+    --callout-note-border: #5ba3d9;
+    --callout-note-text: #1a4971;
 
     /* Shadows & radii */
     --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
@@ -108,11 +108,12 @@ nav {
 }
 
 .logo-ball {
-    width: 28px;
-    height: 28px;
-    background: var(--neon-yellow);
-    border-radius: 50%;
-    box-shadow: 0 0 12px rgba(212, 255, 0, 0.4);
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+    /* Tint black SVG to neon yellow (#d4ff00) */
+    filter: invert(89%) sepia(65%) saturate(600%) hue-rotate(22deg) brightness(105%)
+            drop-shadow(0 0 6px rgba(212, 255, 0, 0.4));
 }
 
 .nav-links {
@@ -187,9 +188,9 @@ nav {
    Hero Section (index.html)
    ============================================ */
 .hero {
-    margin-top: 80px;
-    background: linear-gradient(180deg, var(--header-dark) 0%, var(--header-mid) 60%, var(--off-white) 100%);
-    padding: 120px 40px 140px;
+    margin-top: 68px;
+    padding: 120px 40px 120px;
+    background: var(--header-dark);
     position: relative;
     overflow: hidden;
 }
@@ -204,6 +205,17 @@ nav {
     background: radial-gradient(circle, rgba(212, 255, 0, 0.06), transparent 70%);
     border-radius: 50%;
     pointer-events: none;
+}
+
+.hero::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background: var(--off-white);
+    border-radius: 40px 40px 0 0;
 }
 
 .hero-content {
@@ -226,8 +238,16 @@ nav {
     color: var(--neon-yellow);
 }
 
+.hero .hero-subtitle {
+    font-size: 1.4rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 400;
+    margin-bottom: 16px;
+    letter-spacing: 0.01em;
+}
+
 .hero p {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     color: rgba(255, 255, 255, 0.85);
     max-width: 620px;
     margin-bottom: 36px;
@@ -282,9 +302,9 @@ nav {
    Page Headers (sub-pages)
    ============================================ */
 .page-header {
-    margin-top: 80px;
-    background: linear-gradient(180deg, var(--header-dark) 0%, var(--header-mid) 55%, var(--off-white) 100%);
+    margin-top: 68px;
     padding: 80px 40px 100px;
+    background: var(--header-dark);
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -300,6 +320,17 @@ nav {
     background: radial-gradient(circle, rgba(212, 255, 0, 0.06), transparent 70%);
     border-radius: 50%;
     pointer-events: none;
+}
+
+.page-header::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background: var(--off-white);
+    border-radius: 40px 40px 0 0;
 }
 
 .page-header h1 {
@@ -627,7 +658,7 @@ nav {
     margin-bottom: 14px;
     text-transform: uppercase;
     letter-spacing: 1.5px;
-    background: rgba(229, 184, 76, 0.2);
+    background: rgba(91, 163, 217, 0.15);
     display: inline-block;
     padding: 4px 12px;
     border-radius: 100px;
@@ -781,7 +812,8 @@ nav {
     background: var(--warm-gray);
     padding: 28px;
     border-radius: var(--radius-sm);
-    margin: 28px 0;
+    margin: 28px -36px;
+    width: calc(100% + 72px);
 }
 
 .court-svg {
@@ -1208,7 +1240,7 @@ footer {
     }
 
     .page-header {
-        padding: 60px 24px 80px;
+        padding: 60px 24px;
     }
 
     .page-header h1 {
@@ -1237,6 +1269,11 @@ footer {
 
     .skill-body {
         padding: 24px;
+    }
+
+    .court-container {
+        margin: 28px -24px;
+        width: calc(100% + 48px);
     }
 
     .physics-section {
