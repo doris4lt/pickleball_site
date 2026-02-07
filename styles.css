@@ -1,0 +1,1261 @@
+/* ============================================
+   Pickleball Bestie — Shared Stylesheet
+   Warm & approachable design language
+   ============================================ */
+
+:root {
+    /* Brand anchors */
+    --paddle-black: #1a1a1a;
+    --neon-yellow: #d4ff00;
+
+    /* Softened supporting palette */
+    --paddle-slate: #3d4852;
+    --paddle-gray: #7b8794;
+    --court-green: #00b894;
+    --ball-yellow: #e8f442;
+    --white: #ffffff;
+    --off-white: #f5f5f0;
+    --warm-gray: #edeee9;
+
+    /* Header palette — warmer mid-tones instead of pure black */
+    --header-dark: #2c3639;
+    --header-mid: #3f4f54;
+
+    /* Warm callout tones */
+    --callout-insight-bg: #eef6fb;
+    --callout-insight-border: #5ba4cf;
+    --callout-insight-text: #1a3d5c;
+
+    --callout-drill-bg: #edf9f0;
+    --callout-drill-border: #4dbd74;
+    --callout-drill-text: #1a4027;
+
+    --callout-warning-bg: #fdf0ef;
+    --callout-warning-border: #e06c60;
+    --callout-warning-text: #6b2520;
+
+    --callout-note-bg: #fef9ed;
+    --callout-note-border: #e5b84c;
+    --callout-note-text: #5c4813;
+
+    /* Shadows & radii */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.08);
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+}
+
+/* ---- Reset ---- */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ---- Base ---- */
+body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--off-white);
+    color: var(--paddle-black);
+    line-height: 1.75;
+    overflow-x: hidden;
+}
+
+img, svg {
+    max-width: 100%;
+}
+
+a {
+    color: inherit;
+}
+
+/* ============================================
+   Navigation
+   ============================================ */
+nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: var(--header-dark);
+    z-index: 1000;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+    border-radius: 0 0 12px 12px;
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 40px;
+    height: 80px;
+}
+
+.logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    letter-spacing: 2px;
+    color: var(--white);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-ball {
+    width: 28px;
+    height: 28px;
+    background: var(--neon-yellow);
+    border-radius: 50%;
+    box-shadow: 0 0 12px rgba(212, 255, 0, 0.4);
+}
+
+.nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+}
+
+.nav-links a {
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    transition: color 0.25s ease;
+    position: relative;
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--neon-yellow);
+    border-radius: 1px;
+    transition: width 0.25s ease;
+}
+
+.nav-links a:hover {
+    color: var(--neon-yellow);
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+/* Hamburger menu */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+}
+
+.hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--white);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* ============================================
+   Hero Section (index.html)
+   ============================================ */
+.hero {
+    margin-top: 80px;
+    background: linear-gradient(180deg, var(--header-dark) 0%, var(--header-mid) 60%, var(--off-white) 100%);
+    padding: 120px 40px 140px;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: -20%;
+    right: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(212, 255, 0, 0.06), transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.hero-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+.hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 4.5rem;
+    color: var(--white);
+    letter-spacing: 3px;
+    line-height: 1.05;
+    margin-bottom: 20px;
+}
+
+.hero .highlight {
+    color: var(--neon-yellow);
+}
+
+.hero p {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.85);
+    max-width: 620px;
+    margin-bottom: 36px;
+    line-height: 1.8;
+}
+
+/* ---- CTA Buttons ---- */
+.cta-buttons {
+    display: flex;
+    gap: 16px;
+}
+
+.btn {
+    padding: 14px 32px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.25s ease;
+    border-radius: var(--radius-sm);
+}
+
+.btn-primary {
+    background: var(--neon-yellow);
+    color: var(--paddle-black);
+    box-shadow: 0 2px 12px rgba(212, 255, 0, 0.2);
+}
+
+.btn-primary:hover {
+    background: var(--ball-yellow);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(212, 255, 0, 0.35);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--white);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.btn-secondary:hover {
+    background: var(--white);
+    color: var(--paddle-black);
+    border-color: var(--white);
+    transform: translateY(-2px);
+}
+
+/* ============================================
+   Page Headers (sub-pages)
+   ============================================ */
+.page-header {
+    margin-top: 80px;
+    background: linear-gradient(180deg, var(--header-dark) 0%, var(--header-mid) 55%, var(--off-white) 100%);
+    padding: 80px 40px 100px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.page-header::before {
+    content: '';
+    position: absolute;
+    top: -20%;
+    right: -10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(212, 255, 0, 0.06), transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.page-header h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 4rem;
+    color: var(--white);
+    letter-spacing: 3px;
+    margin-bottom: 12px;
+    position: relative;
+    z-index: 1;
+}
+
+.page-header p {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.8);
+    max-width: 700px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+    line-height: 1.7;
+}
+
+/* ============================================
+   Container
+   ============================================ */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 80px 40px;
+}
+
+/* ============================================
+   Section Headers
+   ============================================ */
+.section-header {
+    text-align: center;
+    margin-bottom: 48px;
+}
+
+.section-header h2 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--paddle-black);
+    margin-bottom: 10px;
+}
+
+.section-header p {
+    font-size: 1.1rem;
+    color: var(--paddle-gray);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* ============================================
+   Section Titles (fundamentals page)
+   ============================================ */
+.section {
+    margin-bottom: 80px;
+}
+
+.section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.8rem;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 3px solid var(--neon-yellow);
+    display: inline-block;
+}
+
+.section-intro {
+    font-size: 1.1rem;
+    color: var(--paddle-gray);
+    margin-bottom: 40px;
+    max-width: 800px;
+    line-height: 1.8;
+}
+
+/* ============================================
+   Quick Links Grid (homepage)
+   ============================================ */
+.quick-links {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    margin-bottom: 80px;
+}
+
+.quick-link-card {
+    background: var(--white);
+    border-radius: var(--radius-md);
+    padding: 36px;
+    box-shadow: var(--shadow-md);
+    transition: all 0.25s ease;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    position: relative;
+    overflow: hidden;
+}
+
+.quick-link-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--neon-yellow), var(--court-green));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+}
+
+.quick-link-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+.quick-link-card:hover::before {
+    transform: scaleX(1);
+}
+
+.quick-link-card h3 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--paddle-black);
+}
+
+.quick-link-card p {
+    color: var(--paddle-gray);
+    margin-bottom: 20px;
+    line-height: 1.7;
+    font-size: 0.95rem;
+}
+
+.card-link {
+    color: var(--paddle-black);
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.25s ease;
+}
+
+.card-link:hover {
+    color: var(--court-green);
+    gap: 10px;
+}
+
+/* ============================================
+   Featured Content Grid (homepage)
+   ============================================ */
+.featured-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+    margin-top: 48px;
+}
+
+.featured-card {
+    background: var(--white);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    transition: all 0.25s ease;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.featured-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+.featured-image {
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(135deg, var(--header-mid) 0%, var(--header-dark) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.featured-image::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(212, 255, 0, 0.12), transparent);
+    transform: translate(-50%, -50%);
+}
+
+.featured-content {
+    padding: 28px;
+}
+
+.featured-content h3 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--paddle-black);
+}
+
+.featured-content p {
+    color: var(--paddle-gray);
+    margin-bottom: 20px;
+    line-height: 1.7;
+    font-size: 0.95rem;
+}
+
+/* ============================================
+   Skill Cards (fundamentals)
+   ============================================ */
+.skill-grid {
+    display: grid;
+    gap: 32px;
+}
+
+.skill-card {
+    background: var(--white);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    transition: all 0.25s ease;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.skill-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+.skill-header {
+    background: linear-gradient(135deg, var(--header-mid) 0%, var(--header-dark) 100%);
+    padding: 28px 36px;
+    position: relative;
+    overflow: hidden;
+}
+
+.skill-header::after {
+    content: '';
+    position: absolute;
+    top: -30%;
+    right: -5%;
+    width: 180px;
+    height: 180px;
+    background: radial-gradient(circle, rgba(212, 255, 0, 0.06), transparent);
+    border-radius: 50%;
+}
+
+.skill-number {
+    display: inline-block;
+    background: var(--neon-yellow);
+    color: var(--paddle-black);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 44px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.skill-header h3 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 6px;
+}
+
+.skill-header p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1rem;
+}
+
+.skill-body {
+    padding: 36px;
+}
+
+/* ============================================
+   Callout Boxes
+   ============================================ */
+
+/* Why Critical / Scientific Note */
+.why-critical,
+.scientific-note {
+    background: var(--warm-gray);
+    padding: 28px 28px 28px 32px;
+    border-radius: var(--radius-md);
+    margin-bottom: 28px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+.why-critical::before,
+.scientific-note::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--callout-note-border);
+    border-radius: 4px 0 0 4px;
+}
+
+.why-critical h4,
+.scientific-note h4 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--callout-note-text);
+    margin-bottom: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    background: rgba(229, 184, 76, 0.2);
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 100px;
+}
+
+.why-critical p,
+.scientific-note p {
+    color: var(--paddle-slate);
+    line-height: 1.75;
+    font-size: 0.95rem;
+}
+
+/* Practice Drill */
+.practice-drill {
+    background: var(--white);
+    padding: 28px 28px 28px 32px;
+    border-radius: var(--radius-md);
+    margin-top: 28px;
+    border: 1px solid var(--warm-gray);
+    position: relative;
+    overflow: hidden;
+}
+
+.practice-drill::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, var(--neon-yellow), var(--court-green));
+    border-radius: 4px 0 0 4px;
+}
+
+.practice-drill h4 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    background: var(--court-green);
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 100px;
+}
+
+.practice-drill p {
+    color: var(--paddle-slate);
+    line-height: 1.75;
+    font-size: 0.95rem;
+}
+
+/* Watch Out */
+.watch-out {
+    background: var(--white);
+    border-radius: var(--radius-md);
+    margin-top: 20px;
+    border: 1px solid rgba(224, 108, 96, 0.25);
+    position: relative;
+    overflow: hidden;
+}
+
+.watch-out h4 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--callout-warning-text);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    background: #fdf0ef;
+    display: block;
+    padding: 14px 28px 14px 32px;
+    margin: 0 0 0 0;
+    border-bottom: 1px solid rgba(224, 108, 96, 0.15);
+}
+
+.watch-out ul {
+    list-style: none;
+    padding: 20px 28px 24px 32px;
+    display: grid;
+    gap: 8px;
+}
+
+.watch-out li {
+    padding-left: 28px;
+    position: relative;
+    color: var(--paddle-slate);
+    font-size: 0.93rem;
+    line-height: 1.7;
+}
+
+.watch-out li::before {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 10px;
+    width: 10px;
+    height: 10px;
+    border: 2px solid var(--callout-warning-border);
+    border-radius: 50%;
+}
+
+/* Key Insight */
+.key-insight {
+    background: var(--white);
+    padding: 28px 28px 28px 32px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--warm-gray);
+    margin: 28px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.key-insight::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, var(--callout-insight-border), #8ec5e2);
+    border-radius: 4px 0 0 4px;
+}
+
+.key-insight h4 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--callout-insight-text);
+    margin-bottom: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    background: rgba(91, 164, 207, 0.15);
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 100px;
+}
+
+.key-insight p {
+    color: var(--paddle-slate);
+    line-height: 1.75;
+    font-size: 0.95rem;
+}
+
+/* ============================================
+   Court Diagrams
+   ============================================ */
+.court-container {
+    background: var(--warm-gray);
+    padding: 28px;
+    border-radius: var(--radius-sm);
+    margin: 28px 0;
+}
+
+.court-svg {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+    display: block;
+}
+
+/* ============================================
+   Key Points List
+   ============================================ */
+.key-points {
+    margin: 28px 0;
+}
+
+.key-points h4 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--paddle-black);
+}
+
+.key-points ul {
+    list-style: none;
+    display: grid;
+    gap: 12px;
+}
+
+.key-points li {
+    padding-left: 28px;
+    position: relative;
+    font-size: 0.95rem;
+    line-height: 1.7;
+}
+
+.key-points li::before {
+    content: '\2192';
+    position: absolute;
+    left: 0;
+    color: var(--court-green);
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+/* ============================================
+   Physics Page — Sections
+   ============================================ */
+.physics-section {
+    background: var(--white);
+    border-radius: var(--radius-md);
+    padding: 44px;
+    margin-bottom: 40px;
+    box-shadow: var(--shadow-md);
+    border-top: 3px solid var(--neon-yellow);
+}
+
+.physics-section h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.6rem;
+    letter-spacing: 2px;
+    margin-bottom: 24px;
+    color: var(--paddle-black);
+}
+
+.physics-section h3 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin: 36px 0 16px;
+    color: var(--paddle-slate);
+}
+
+.intro-text {
+    font-size: 1.1rem;
+    color: var(--paddle-gray);
+    margin-bottom: 32px;
+    line-height: 1.8;
+}
+
+/* Diagram Container (physics page) */
+.diagram-container {
+    background: var(--warm-gray);
+    padding: 36px;
+    border-radius: var(--radius-sm);
+    margin: 36px 0;
+}
+
+.diagram-title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 24px;
+    color: var(--paddle-slate);
+}
+
+.diagram-svg {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    display: block;
+}
+
+/* Formula Box */
+.formula-box {
+    background: var(--header-dark);
+    color: var(--neon-yellow);
+    padding: 28px;
+    border-radius: var(--radius-sm);
+    margin: 28px 0;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.formula-box h4 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.formula {
+    font-size: 1.2rem;
+    text-align: center;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    margin: 12px 0;
+}
+
+.formula-explanation {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.75);
+    margin-top: 12px;
+    line-height: 1.7;
+}
+
+/* Comparison Grid */
+.comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 32px 0;
+}
+
+.comparison-card {
+    background: var(--white);
+    border-radius: var(--radius-sm);
+    padding: 28px;
+    box-shadow: var(--shadow-sm);
+    border-top: 3px solid var(--neon-yellow);
+}
+
+.comparison-card h4 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--paddle-black);
+}
+
+.comparison-card ul {
+    list-style: none;
+    padding: 0;
+}
+
+.comparison-card li {
+    padding: 10px 0 10px 28px;
+    position: relative;
+    border-bottom: 1px solid var(--warm-gray);
+    font-size: 0.95rem;
+}
+
+.comparison-card li:last-child {
+    border-bottom: none;
+}
+
+.comparison-card li::before {
+    content: '\2192';
+    position: absolute;
+    left: 0;
+    color: var(--court-green);
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* Practical Application */
+.practical-app {
+    background: linear-gradient(135deg, var(--header-mid) 0%, var(--header-dark) 100%);
+    color: var(--white);
+    padding: 36px;
+    border-radius: var(--radius-sm);
+    margin: 36px 0;
+}
+
+.practical-app h3 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--neon-yellow);
+    margin-bottom: 16px;
+}
+
+.practical-app p {
+    font-size: 1rem;
+    line-height: 1.75;
+    margin-bottom: 12px;
+}
+
+.practical-app ul {
+    list-style: none;
+    margin-top: 16px;
+}
+
+.practical-app li {
+    padding: 8px 0 8px 28px;
+    position: relative;
+    font-size: 0.95rem;
+}
+
+.practical-app li::before {
+    content: '\2713';
+    position: absolute;
+    left: 0;
+    color: var(--neon-yellow);
+    font-weight: bold;
+}
+
+/* ============================================
+   Paddle Guide — Coming Soon / Preview
+   ============================================ */
+.coming-soon {
+    background: var(--white);
+    border-radius: var(--radius-md);
+    padding: 64px 48px;
+    text-align: center;
+    box-shadow: var(--shadow-md);
+    border-top: 3px solid var(--neon-yellow);
+}
+
+.coming-soon h2 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 24px;
+    color: var(--paddle-black);
+}
+
+.coming-soon p {
+    font-size: 1.1rem;
+    color: var(--paddle-gray);
+    max-width: 650px;
+    margin: 0 auto 32px;
+    line-height: 1.8;
+}
+
+.preview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+    margin-top: 48px;
+}
+
+.preview-card {
+    background: var(--warm-gray);
+    padding: 28px;
+    border-radius: var(--radius-sm);
+    text-align: left;
+    transition: all 0.25s ease;
+}
+
+.preview-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+.preview-card h3 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--paddle-slate);
+}
+
+.preview-card ul {
+    list-style: none;
+    padding: 0;
+}
+
+.preview-card li {
+    padding: 6px 0 6px 24px;
+    position: relative;
+    color: var(--paddle-gray);
+    font-size: 0.9rem;
+}
+
+.preview-card li::before {
+    content: '\2192';
+    position: absolute;
+    left: 0;
+    color: var(--court-green);
+    font-weight: bold;
+}
+
+/* ============================================
+   Footer
+   ============================================ */
+footer {
+    background: var(--header-dark);
+    color: var(--white);
+    padding: 60px 40px 32px;
+    margin-top: 80px;
+    border-radius: 24px 24px 0 0;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 36px;
+    margin-bottom: 36px;
+}
+
+.footer-section h4 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--neon-yellow);
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.footer-section ul {
+    list-style: none;
+}
+
+.footer-section ul li {
+    margin-bottom: 10px;
+}
+
+.footer-section a {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.25s ease;
+}
+
+.footer-section a:hover {
+    color: var(--neon-yellow);
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 28px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--paddle-gray);
+    font-size: 0.85rem;
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+@media (max-width: 768px) {
+    .nav-container {
+        padding: 0 20px;
+    }
+
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 80px;
+        left: 0;
+        right: 0;
+        background: var(--header-dark);
+        flex-direction: column;
+        padding: 20px;
+        gap: 0;
+        border-radius: 0 0 12px 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .nav-links li {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .nav-links a {
+        display: block;
+        padding: 14px 0;
+    }
+
+    .nav-links a::after {
+        display: none;
+    }
+
+    .hamburger {
+        display: flex;
+    }
+
+    .hero {
+        padding: 80px 24px;
+    }
+
+    .hero h1 {
+        font-size: 2.8rem;
+    }
+
+    .hero p {
+        font-size: 1.05rem;
+    }
+
+    .cta-buttons {
+        flex-direction: column;
+    }
+
+    .page-header {
+        padding: 60px 24px 80px;
+    }
+
+    .page-header h1 {
+        font-size: 2.8rem;
+    }
+
+    .container {
+        padding: 48px 20px;
+    }
+
+    .quick-links {
+        grid-template-columns: 1fr;
+    }
+
+    .featured-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .section-header h2 {
+        font-size: 1.8rem;
+    }
+
+    .section-title {
+        font-size: 2rem;
+    }
+
+    .skill-body {
+        padding: 24px;
+    }
+
+    .physics-section {
+        padding: 28px 20px;
+    }
+
+    .physics-section h2 {
+        font-size: 2rem;
+    }
+
+    .comparison-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .coming-soon {
+        padding: 40px 24px;
+    }
+
+    .preview-grid {
+        grid-template-columns: 1fr;
+    }
+}

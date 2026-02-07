@@ -7,210 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --paddle-black: #1a1a1a;
-            --paddle-slate: #2d3436;
-            --paddle-gray: #636e72;
-            --court-green: #00b894;
-            --neon-yellow: #d4ff00;
-            --ball-yellow: #e8f442;
-            --white: #ffffff;
-            --off-white: #f8f9fa;
-            --shadow: rgba(0, 0, 0, 0.15);
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'DM Sans', sans-serif;
-            background: var(--off-white);
-            color: var(--paddle-black);
-            line-height: 1.6;
-        }
-        
-        /* Navigation */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: var(--paddle-black);
-            z-index: 1000;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        }
-        
-        .nav-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 40px;
-            height: 80px;
-        }
-        
-        .logo {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 2rem;
-            letter-spacing: 2px;
-            color: var(--white);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        
-        .logo-ball {
-            width: 32px;
-            height: 32px;
-            background: var(--neon-yellow);
-            border-radius: 50%;
-            box-shadow: 0 0 20px rgba(212, 255, 0, 0.5);
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 40px;
-            list-style: none;
-        }
-        
-        .nav-links a {
-            color: var(--white);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.95rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-        }
-        
-        .nav-links a:hover {
-            color: var(--neon-yellow);
-        }
-        
-        /* Page Header */
-        .page-header {
-            margin-top: 80px;
-            background: linear-gradient(135deg, var(--paddle-black) 0%, var(--paddle-slate) 100%);
-            padding: 100px 40px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .page-header::before {
-            content: '🏓';
-            position: absolute;
-            font-size: 300px;
-            opacity: 0.05;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-15deg);
-        }
-        
-        .page-header h1 {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 4.5rem;
-            color: var(--white);
-            letter-spacing: 4px;
-            margin-bottom: 15px;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .page-header p {
-            font-size: 1.3rem;
-            color: var(--off-white);
-            max-width: 800px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-        
-        /* Container */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 80px 40px;
-        }
-        
-        /* Coming Soon */
-        .coming-soon {
-            background: var(--white);
-            border-radius: 16px;
-            padding: 80px 60px;
-            text-align: center;
-            box-shadow: 0 8px 40px var(--shadow);
-            border-top: 5px solid var(--neon-yellow);
-        }
-        
-        .coming-soon h2 {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 3rem;
-            letter-spacing: 3px;
-            margin-bottom: 30px;
-            color: var(--paddle-black);
-        }
-        
-        .coming-soon p {
-            font-size: 1.2rem;
-            color: var(--paddle-gray);
-            max-width: 700px;
-            margin: 0 auto 40px;
-            line-height: 1.8;
-        }
-        
-        .preview-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            margin-top: 60px;
-        }
-        
-        .preview-card {
-            background: linear-gradient(135deg, var(--off-white) 0%, #e9ecef 100%);
-            padding: 30px;
-            border-radius: 12px;
-            text-align: left;
-        }
-        
-        .preview-card h3 {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.6rem;
-            letter-spacing: 1px;
-            margin-bottom: 15px;
-            color: var(--paddle-slate);
-        }
-        
-        .preview-card ul {
-            list-style: none;
-            padding: 0;
-        }
-        
-        .preview-card li {
-            padding: 8px 0 8px 25px;
-            position: relative;
-            color: var(--paddle-gray);
-        }
-        
-        .preview-card li::before {
-            content: '→';
-            position: absolute;
-            left: 0;
-            color: var(--court-green);
-            font-weight: bold;
-        }
-        
-        .icon {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            display: block;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <nav>
@@ -219,6 +16,11 @@
                 <div class="logo-ball"></div>
                 PICKLEBALL BESTIE
             </a>
+            <button class="hamburger" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
             <ul class="nav-links">
                 <li><a href="fundamentals.html">Fundamentals</a></li>
                 <li><a href="spin-physics.html">Spin Physics</a></li>
@@ -235,15 +37,14 @@
 
     <div class="container">
         <div class="coming-soon">
-            <h2>COMING SOON</h2>
+            <h2>Coming Soon</h2>
             <p>
-                A comprehensive guide to help you choose the right paddle based on power vs. control balance, 
+                A comprehensive guide to help you choose the right paddle based on power vs. control balance,
                 weight distribution, core materials, surface textures, and your individual playing style.
             </p>
-            
+
             <div class="preview-grid">
                 <div class="preview-card">
-                    <span class="icon">⚖️</span>
                     <h3>Power vs. Control</h3>
                     <ul>
                         <li>Understanding the trade-off</li>
@@ -252,9 +53,8 @@
                         <li>Core material effects</li>
                     </ul>
                 </div>
-                
+
                 <div class="preview-card">
-                    <span class="icon">⚙️</span>
                     <h3>Core Materials</h3>
                     <ul>
                         <li>Polymer vs. Nomex vs. Aluminum</li>
@@ -263,9 +63,8 @@
                         <li>Durability comparisons</li>
                     </ul>
                 </div>
-                
+
                 <div class="preview-card">
-                    <span class="icon">🎨</span>
                     <h3>Surface Technology</h3>
                     <ul>
                         <li>Carbon fiber vs. fiberglass</li>
@@ -274,9 +73,8 @@
                         <li>Raw carbon and thermoformed edges</li>
                     </ul>
                 </div>
-                
+
                 <div class="preview-card">
-                    <span class="icon">📏</span>
                     <h3>Weight & Balance</h3>
                     <ul>
                         <li>Lightweight vs. heavyweight pros/cons</li>
@@ -285,9 +83,8 @@
                         <li>Grip size and comfort</li>
                     </ul>
                 </div>
-                
+
                 <div class="preview-card">
-                    <span class="icon">🎯</span>
                     <h3>Play Style Matching</h3>
                     <ul>
                         <li>Bangers: power-focused paddles</li>
@@ -296,9 +93,8 @@
                         <li>Transition from beginner to advanced</li>
                     </ul>
                 </div>
-                
+
                 <div class="preview-card">
-                    <span class="icon">💰</span>
                     <h3>Budget Guide</h3>
                     <ul>
                         <li>Entry-level recommendations</li>
@@ -308,12 +104,19 @@
                     </ul>
                 </div>
             </div>
-            
-            <p style="margin-top: 60px; color: var(--paddle-slate); font-style: italic;">
-                This comprehensive paddle selection guide is currently under development. 
+
+            <p style="margin-top: 48px; color: var(--paddle-slate); font-style: italic;">
+                This comprehensive paddle selection guide is currently under development.
                 Check back soon for detailed breakdowns, comparison charts, and personalized recommendations.
             </p>
         </div>
     </div>
+
+    <script>
+        document.querySelector('.hamburger').addEventListener('click', function() {
+            this.classList.toggle('active');
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+    </script>
 </body>
 </html>
