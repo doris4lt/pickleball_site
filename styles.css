@@ -1227,6 +1227,10 @@ footer {
         padding: 80px 24px;
     }
 
+    .hero::before {
+        display: none;
+    }
+
     .hero h1 {
         font-size: 2.8rem;
     }
@@ -1241,6 +1245,10 @@ footer {
 
     .page-header {
         padding: 60px 24px;
+    }
+
+    .page-header::before {
+        display: none;
     }
 
     .page-header h1 {

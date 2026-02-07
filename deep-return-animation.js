@@ -25,6 +25,10 @@
     var ISO_SIN = Math.sin(ISO_ANGLE);
 
     var scale = 1.5;
+    function updateScale() {
+        scale = Math.min(width / 500, window.innerHeight / 600);
+        if (width < 768) scale *= 0.95;
+    }
     function project(x, y, z) {
         if (z === undefined) z = 0;
         var isoX = (x - y) * ISO_COS * scale;
@@ -82,6 +86,7 @@
         canvas.height = height * dpr;
         canvas.style.height = height + 'px';
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        updateScale();
     }
 
     function resetPlay() {
