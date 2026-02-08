@@ -8,6 +8,72 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <style>
+        .spin-ctrl-btn {
+            padding: 10px 24px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            border: 2px solid var(--paddle-slate);
+            background: var(--white);
+            color: var(--paddle-black);
+            cursor: pointer;
+            border-radius: var(--radius-sm);
+            transition: all 0.25s ease;
+        }
+        .spin-ctrl-btn:hover {
+            background: var(--warm-gray);
+            border-color: var(--paddle-black);
+        }
+        .spin-ctrl-btn.active {
+            background: var(--paddle-black);
+            color: var(--neon-yellow);
+            border-color: var(--paddle-black);
+        }
+        #spinProgressBar {
+            height: 18px;
+            --progress-pct: 0%;
+            background: transparent;
+        }
+        #spinProgressBar::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--neon-yellow);
+            cursor: pointer;
+            border: 2px solid var(--paddle-black);
+            margin-top: -7.5px;
+        }
+        #spinProgressBar::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--neon-yellow);
+            cursor: pointer;
+            border: 2px solid var(--paddle-black);
+        }
+        #spinProgressBar::-webkit-slider-runnable-track {
+            height: 3px;
+            border-radius: 1.5px;
+            background: linear-gradient(to right, var(--neon-yellow) var(--progress-pct), var(--paddle-slate) var(--progress-pct));
+            border: 1px solid var(--paddle-black);
+        }
+        #spinProgressBar::-moz-range-track {
+            height: 3px;
+            border-radius: 1.5px;
+            background: var(--paddle-slate);
+            border: 1px solid var(--paddle-black);
+        }
+        #spinProgressBar::-moz-range-progress {
+            height: 3px;
+            border-radius: 1.5px;
+            background: var(--neon-yellow);
+            border: 1px solid var(--paddle-black);
+        }
+    </style>
 </head>
 <body>
     <nav>
@@ -190,47 +256,15 @@
 
             <div class="diagram-container">
                 <h3 class="diagram-title">Flight Path Comparison</h3>
-                <svg class="diagram-svg" viewBox="0 0 800 500">
-                    <!-- Net -->
-                    <line x1="400" y1="250" x2="400" y2="350" stroke="#1a1a1a" stroke-width="4"/>
-                    <rect x="395" y="250" width="10" height="100" fill="#1a1a1a"/>
-                    <text x="400" y="370" text-anchor="middle" font-size="14" fill="#636e72">NET</text>
-
-                    <!-- Ground line -->
-                    <line x1="50" y1="350" x2="750" y2="350" stroke="#636e72" stroke-width="2"/>
-
-                    <!-- Flat shot (baseline) -->
-                    <path d="M 100 300 Q 400 200 700 300" fill="none" stroke="#636e72" stroke-width="3" stroke-dasharray="10,5"/>
-                    <text x="700" y="290" font-size="14" fill="#636e72">No spin</text>
-
-                    <!-- Topspin trajectory (dips down) -->
-                    <path d="M 100 300 Q 350 180 500 280 Q 600 330 700 350" fill="none" stroke="#00b894" stroke-width="4"/>
-                    <circle cx="100" cy="300" r="8" fill="#00b894"/>
-                    <circle cx="700" cy="350" r="8" fill="#00b894"/>
-                    <text x="550" y="360" font-size="16" fill="#00b894" font-weight="bold">Topspin (drops fast)</text>
-
-                    <!-- Backspin trajectory (floats) -->
-                    <path d="M 100 300 Q 450 150 700 220" fill="none" stroke="#e74c3c" stroke-width="4"/>
-                    <circle cx="100" cy="300" r="8" fill="#e74c3c"/>
-                    <circle cx="700" cy="220" r="8" fill="#e74c3c"/>
-                    <text x="550" y="180" font-size="16" fill="#e74c3c" font-weight="bold">Backspin (floats)</text>
-
-                    <!-- Arrows showing forces -->
-                    <line x1="500" y1="280" x2="500" y2="320" stroke="#d4ff00" stroke-width="3" marker-end="url(#arrowDown)"/>
-                    <text x="510" y="310" font-size="12" fill="#1a1a1a">F<tspan baseline-shift="sub" font-size="10">M</tspan> down</text>
-
-                    <line x1="550" y1="170" x2="550" y2="130" stroke="#d4ff00" stroke-width="3" marker-end="url(#arrowUp)"/>
-                    <text x="560" y="155" font-size="12" fill="#1a1a1a">F<tspan baseline-shift="sub" font-size="10">M</tspan> up</text>
-
-                    <defs>
-                        <marker id="arrowDown" markerWidth="10" markerHeight="10" refX="5" refY="3" orient="auto">
-                            <path d="M0,0 L0,6 L9,3 z" fill="#d4ff00" />
-                        </marker>
-                        <marker id="arrowUp" markerWidth="10" markerHeight="10" refX="5" refY="3" orient="auto">
-                            <path d="M0,0 L0,6 L9,3 z" fill="#d4ff00" />
-                        </marker>
-                    </defs>
-                </svg>
+                <canvas id="spinTrajectoryCanvas" style="display:block; width:100%; border-radius:8px;"></canvas>
+                <div style="margin-top:16px; display:flex; flex-direction:column; gap:12px; max-width:100%;">
+                    <input type="range" id="spinProgressBar" min="0" max="1000" value="0"
+                        style="width:100%; cursor:pointer; -webkit-appearance:none; appearance:none;">
+                    <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+                        <button id="spinPlayPauseBtn" class="spin-ctrl-btn">Play</button>
+                        <button id="spinResetBtn" class="spin-ctrl-btn">Reset</button>
+                    </div>
+                </div>
             </div>
 
             <div class="formula-box">
@@ -452,6 +486,235 @@
             this.classList.toggle('active');
             document.querySelector('.nav-links').classList.toggle('active');
         });
+    </script>
+    <script>
+    (function() {
+        var canvas = document.getElementById('spinTrajectoryCanvas');
+        if (!canvas) return;
+        var ctx = canvas.getContext('2d');
+        var progressBar = document.getElementById('spinProgressBar');
+        var playPauseBtn = document.getElementById('spinPlayPauseBtn');
+        var resetBtn = document.getElementById('spinResetBtn');
+
+        var cWidth, cHeight;
+        var dpr = window.devicePixelRatio || 1;
+
+        // Fixed simulation space — always 800x400
+        var SIM_W = 800, SIM_H = 400;
+        var SIM_GROUND = SIM_H - 50;
+        var SIM_START_X = 50;
+        var SIM_START_Y = SIM_GROUND - 20;
+        var GRAVITY = 0.4;
+
+        var isPlaying = false;
+        var currentFrame = 0;
+        var animationId = null;
+        var trajData = [];
+        var maxPoints = 0;
+
+        function updateProgressFill() {
+            var pct = (progressBar.value / progressBar.max) * 100 || 0;
+            // Remove background from input itself; inject gradient into track via stylesheet
+            progressBar.style.setProperty('--progress-pct', pct + '%');
+        }
+
+        // Scale factor from sim coords to canvas coords
+        var scaleX, scaleY;
+
+        function resizeCanvas() {
+            var rect = canvas.parentElement.getBoundingClientRect();
+            cWidth = rect.width;
+            cHeight = cWidth * 0.5;
+            canvas.width = cWidth * dpr;
+            canvas.height = cHeight * dpr;
+            canvas.style.height = cHeight + 'px';
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            scaleX = cWidth / SIM_W;
+            scaleY = cHeight / SIM_H;
+            drawScene();
+        }
+
+        function sx(x) { return x * scaleX; }
+        function sy(y) { return y * scaleY; }
+
+        function Trajectory(type, color, labelOffset) {
+            this.type = type;
+            this.color = color;
+            this.labelOffset = labelOffset;
+            this.points = [];
+            this.highestPoint = null;
+        }
+
+        Trajectory.prototype.calculate = function() {
+            this.points = [];
+            this.highestPoint = null;
+            var x = SIM_START_X, y = SIM_START_Y;
+            var vx = 8;
+            var vy;
+            if (this.type === 'topspin') vy = -11;
+            else if (this.type === 'backspin') vy = -9;
+            else vy = -10;
+            var bounced = false, minY = y;
+            while (x < SIM_W && this.points.length < 300) {
+                this.points.push({x: x, y: y});
+                if (y < minY) { minY = y; this.highestPoint = {x: x, y: y}; }
+                vy += GRAVITY;
+                if (this.type === 'topspin') vy += 0.18;
+                else if (this.type === 'backspin') vy -= 0.12;
+                var nextX = x + vx, nextY = y + vy;
+                if (nextY >= SIM_GROUND && !bounced) {
+                    var t = (SIM_GROUND - y) / (nextY - y);
+                    var ix = x + vx * t;
+                    this.points.push({x: ix, y: SIM_GROUND});
+                    x = ix; y = SIM_GROUND; vy *= -0.6;
+                    if (this.type === 'topspin') { vx *= 1.15; vy *= 1.2; }
+                    else if (this.type === 'backspin') { vx *= 0.65; vy *= 0.5; }
+                    else { vx *= 0.9; vy *= 0.8; }
+                    bounced = true;
+                } else { x = nextX; y = nextY; }
+                if (bounced && y > SIM_GROUND) { this.points.push({x: x, y: SIM_GROUND}); break; }
+            }
+        };
+
+        Trajectory.prototype.draw = function() {
+            ctx.strokeStyle = this.color;
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            for (var i = 0; i < this.points.length; i++) {
+                if (i === 0) ctx.moveTo(sx(this.points[i].x), sy(this.points[i].y));
+                else ctx.lineTo(sx(this.points[i].x), sy(this.points[i].y));
+            }
+            ctx.stroke();
+            if (this.highestPoint) {
+                var fontSize = Math.max(12, cWidth * 0.018);
+                ctx.font = 'bold ' + fontSize + 'px "DM Sans", sans-serif';
+                var label = this.type.charAt(0).toUpperCase() + this.type.slice(1);
+                // Position labels away from curves: backspin above, flat to the right, topspin below
+                var lx, ly;
+                if (this.type === 'backspin') {
+                    lx = sx(this.highestPoint.x) + 15;
+                    ly = sy(this.highestPoint.y) - fontSize;
+                } else if (this.type === 'topspin') {
+                    lx = sx(this.highestPoint.x) + 40;
+                    ly = sy(this.highestPoint.y) + fontSize + 6;
+                } else {
+                    lx = sx(this.highestPoint.x) + 15;
+                    ly = sy(this.highestPoint.y) - fontSize * 0.4;
+                }
+                ctx.save();
+                ctx.shadowColor = 'rgba(0,0,0,0.6)';
+                ctx.shadowBlur = 1;
+                ctx.shadowOffsetX = 1;
+                ctx.shadowOffsetY = 1;
+                ctx.fillStyle = this.color;
+                ctx.fillText(label, lx, ly);
+                ctx.restore();
+            }
+        };
+
+        Trajectory.prototype.drawBall = function(frameIndex) {
+            var idx = Math.min(frameIndex, this.points.length - 1);
+            if (idx >= 0 && idx < this.points.length) {
+                var p = this.points[idx];
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(sx(p.x), sy(p.y), Math.max(6, cWidth * 0.01), 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
+        };
+
+        function recalculate() {
+            trajData = [
+                new Trajectory('backspin', '#5ba4cf', -10),
+                new Trajectory('flat', '#7b8794', 0),
+                new Trajectory('topspin', '#00b894', 10)
+            ];
+            trajData.forEach(function(t) { t.calculate(); });
+            maxPoints = Math.max.apply(null, trajData.map(function(t) { return t.points.length; }));
+            progressBar.max = maxPoints;
+            if (currentFrame > maxPoints) currentFrame = maxPoints;
+        }
+
+        function drawScene() {
+            ctx.clearRect(0, 0, cWidth, cHeight);
+            ctx.fillStyle = '#f2f8fc';
+            ctx.fillRect(0, 0, cWidth, cHeight);
+            // Ground line
+            ctx.strokeStyle = '#3d4852';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(0, sy(SIM_GROUND));
+            ctx.lineTo(cWidth, sy(SIM_GROUND));
+            ctx.stroke();
+            ctx.setLineDash([]);
+            // Trajectories
+            trajData.forEach(function(t) { t.draw(); });
+            // Contact point
+            ctx.fillStyle = '#1a1a1a';
+            ctx.beginPath();
+            ctx.arc(sx(SIM_START_X), sy(SIM_START_Y), 5, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#3d4852';
+            ctx.font = 'bold ' + Math.max(11, cWidth * 0.015) + 'px "DM Sans", sans-serif';
+            ctx.fillText('Contact Point', sx(SIM_START_X) - cWidth * 0.05, sy(SIM_START_Y) - 10);
+            // Balls
+            trajData.forEach(function(t) { t.drawBall(currentFrame); });
+        }
+
+        function animate() {
+            if (isPlaying && currentFrame < maxPoints) {
+                currentFrame += 1;
+                progressBar.value = currentFrame;
+                updateProgressFill();
+                drawScene();
+                animationId = requestAnimationFrame(animate);
+            } else if (currentFrame >= maxPoints) {
+                isPlaying = false;
+                playPauseBtn.textContent = 'Play';
+                playPauseBtn.classList.remove('active');
+            }
+        }
+
+        playPauseBtn.addEventListener('click', function() {
+            isPlaying = !isPlaying;
+            if (isPlaying) {
+                playPauseBtn.textContent = 'Pause';
+                playPauseBtn.classList.add('active');
+                if (currentFrame >= maxPoints) currentFrame = 0;
+                animate();
+            } else {
+                playPauseBtn.textContent = 'Play';
+                playPauseBtn.classList.remove('active');
+                if (animationId) cancelAnimationFrame(animationId);
+            }
+        });
+
+        resetBtn.addEventListener('click', function() {
+            isPlaying = false;
+            currentFrame = 0;
+            progressBar.value = 0;
+            updateProgressFill();
+            playPauseBtn.textContent = 'Play';
+            playPauseBtn.classList.remove('active');
+            if (animationId) cancelAnimationFrame(animationId);
+            drawScene();
+        });
+
+        progressBar.addEventListener('input', function(e) {
+            currentFrame = parseInt(e.target.value);
+            updateProgressFill();
+            drawScene();
+        });
+
+        window.addEventListener('resize', resizeCanvas);
+        recalculate();
+        resizeCanvas();
+        updateProgressFill();
+    })();
     </script>
 </body>
 </html>

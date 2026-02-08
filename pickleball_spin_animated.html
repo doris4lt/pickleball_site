@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pickleball Spin Trajectories</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            gap: 20px;
+        }
+        
+        canvas {
+            display: block;
+            border: 1px solid #ddd;
+        }
+        
+        .controls {
+            width: 800px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .progress-container {
+            width: 100%;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            cursor: pointer;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        button {
+            padding: 10px 20px;
+            font-size: 14px;
+            border: 2px solid #333;
+            background: white;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.2s;
+        }
+        
+        button:hover {
+            background: #f0f0f0;
+        }
+        
+        button.active {
+            background: #333;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="pickleballCanvas"></canvas>
+    
+    <div class="controls">
+        <div class="progress-container">
+            <input type="range" class="progress-bar" id="progressBar" min="0" max="1000" value="0">
+        </div>
+        <div class="button-group">
+            <button id="playPauseBtn">Play</button>
+            <button id="resetBtn">Reset</button>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('pickleballCanvas');
+        const ctx = canvas.getContext('2d');
+        const progressBar = document.getElementById('progressBar');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        
+        canvas.width = 800;
+        canvas.height = 400;
+        
+        // Physics constants
+        const GRAVITY = 0.4;
+        const GROUND_Y = canvas.height - 50;
+        const START_X = 50;
+        const START_Y = GROUND_Y - 20;
+        
+        let isPlaying = false;
+        let currentFrame = 0;
+        let animationId = null;
+
+        class Trajectory {
+            constructor(type, color, labelOffset) {
+                this.type = type;
+                this.color = color;
+                this.labelOffset = labelOffset;
+                this.points = [];
+                this.highestPoint = null;
+                this.calculate();
+            }
+            
+            calculate() {
+                let x = START_X;
+                let y = START_Y;
+                let vx = 8;
+                let vy = -12;
+                let bounced = false;
+                let minY = START_Y;
+                
+                if (this.type === 'topspin') {
+                    vy = -11;
+                } else if (this.type === 'backspin') {
+                    vy = -9;
+                } else {
+                    vy = -10;
+                }
+                
+                while (x < canvas.width && this.points.length < 300) {
+                    this.points.push({x, y});
+                    
+                    if (y < minY) {
+                        minY = y;
+                        this.highestPoint = {x, y};
+                    }
+                    
+                    vy += GRAVITY;
+                    
+                    if (this.type === 'topspin') {
+                        vy += 0.18;
+                    } else if (this.type === 'backspin') {
+                        vy -= 0.12;
+                    }
+                    
+                    let nextX = x + vx;
+                    let nextY = y + vy;
+                    
+                    // Check if next point would cross ground line for the first time
+                    if (nextY >= GROUND_Y && !bounced) {
+                        // Calculate exact intersection point
+                        const t = (GROUND_Y - y) / (nextY - y);
+                        const intersectX = x + vx * t;
+                        
+                        // Add the exact ground intersection point
+                        this.points.push({x: intersectX, y: GROUND_Y});
+                        
+                        // Update position to ground
+                        x = intersectX;
+                        y = GROUND_Y;
+                        vy *= -0.6;
+                        
+                        if (this.type === 'topspin') {
+                            vx *= 1.15;
+                            vy *= 1.2;
+                        } else if (this.type === 'backspin') {
+                            vx *= 0.65;
+                            vy *= 0.5;
+                        } else {
+                            vx *= 0.9;
+                            vy *= 0.8;
+                        }
+                        
+                        bounced = true;
+                    } else {
+                        x = nextX;
+                        y = nextY;
+                    }
+                    
+                    // Stop if trajectory goes below ground after bounce
+                    if (bounced && y > GROUND_Y) {
+                        // Add final point at ground level
+                        this.points.push({x: x, y: GROUND_Y});
+                        break;
+                    }
+                }
+            }
+            
+            draw() {
+                ctx.strokeStyle = this.color;
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                
+                for (let i = 0; i < this.points.length; i++) {
+                    const point = this.points[i];
+                    if (i === 0) {
+                        ctx.moveTo(point.x, point.y);
+                    } else {
+                        ctx.lineTo(point.x, point.y);
+                    }
+                }
+                
+                ctx.stroke();
+                
+                // Draw label at highest point
+                if (this.highestPoint) {
+                    ctx.fillStyle = this.color;
+                    ctx.font = 'bold 14px Arial';
+                    const label = this.type.charAt(0).toUpperCase() + this.type.slice(1);
+                    
+                    // Special positioning for topspin to avoid overlap
+                    if (this.type === 'topspin') {
+                        ctx.fillText(label, this.highestPoint.x + 35, this.highestPoint.y + this.labelOffset);
+                    } else {
+                        ctx.fillText(label, this.highestPoint.x + 10, this.highestPoint.y + this.labelOffset);
+                    }
+                }
+            }
+            
+            drawBall(frameIndex) {
+                // Use actual frame index to determine position along trajectory
+                const pointIndex = Math.min(frameIndex, this.points.length - 1);
+                
+                if (pointIndex >= 0 && pointIndex < this.points.length) {
+                    const point = this.points[pointIndex];
+                    
+                    ctx.fillStyle = this.color;
+                    ctx.beginPath();
+                    ctx.arc(point.x, point.y, 8, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    ctx.strokeStyle = '#fff';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                }
+            }
+        }
+        
+        const trajectories = [
+            new Trajectory('backspin', '#2196F3', -10),
+            new Trajectory('flat', '#FF9800', 0),
+            new Trajectory('topspin', '#4CAF50', 10)
+        ];
+        
+        // Find the longest trajectory to set animation duration
+        const maxPoints = Math.max(...trajectories.map(t => t.points.length));
+        
+        function drawScene() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw ground line
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(0, GROUND_Y);
+            ctx.lineTo(canvas.width, GROUND_Y);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            // Draw trajectories
+            trajectories.forEach(trajectory => trajectory.draw());
+            
+            // Draw contact point marker
+            ctx.fillStyle = '#333';
+            ctx.beginPath();
+            ctx.arc(START_X, START_Y, 5, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.fillStyle = '#333';
+            ctx.font = 'bold 12px Arial';
+            ctx.fillText('Contact Point', START_X - 40, START_Y - 10);
+            
+            // Draw balls at current frame
+            trajectories.forEach(trajectory => trajectory.drawBall(currentFrame));
+        }
+        
+        function animate() {
+            if (isPlaying && currentFrame < maxPoints) {
+                currentFrame += 1;
+                progressBar.value = currentFrame;
+                drawScene();
+                animationId = requestAnimationFrame(animate);
+            } else if (currentFrame >= maxPoints) {
+                isPlaying = false;
+                playPauseBtn.textContent = 'Play';
+                playPauseBtn.classList.remove('active');
+            }
+        }
+        
+        playPauseBtn.addEventListener('click', () => {
+            isPlaying = !isPlaying;
+            if (isPlaying) {
+                playPauseBtn.textContent = 'Pause';
+                playPauseBtn.classList.add('active');
+                if (currentFrame >= maxPoints) {
+                    currentFrame = 0;
+                }
+                animate();
+            } else {
+                playPauseBtn.textContent = 'Play';
+                playPauseBtn.classList.remove('active');
+                if (animationId) {
+                    cancelAnimationFrame(animationId);
+                }
+            }
+        });
+        
+        resetBtn.addEventListener('click', () => {
+            isPlaying = false;
+            currentFrame = 0;
+            progressBar.value = 0;
+            playPauseBtn.textContent = 'Play';
+            playPauseBtn.classList.remove('active');
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+            drawScene();
+        });
+        
+        progressBar.addEventListener('input', (e) => {
+            currentFrame = parseInt(e.target.value);
+            drawScene();
+        });
+        
+        // Set progress bar max to the longest trajectory
+        progressBar.max = maxPoints;
+        
+        // Initial draw
+        drawScene();
+    </script>
+</body>
+</html>

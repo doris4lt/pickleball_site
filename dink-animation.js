@@ -36,7 +36,7 @@
         startX: 0, startY: 0,
         bounceX: 0, bounceY: 0,
         targetX: 0, targetY: 0,
-        progress: 1, speed: 0.018,
+        progress: 1, speed: 0.009,
         radius: 6, color: '#efff00',
         state: 'flying', tNet: 0.5, peakZ: 50
     };
