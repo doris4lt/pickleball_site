@@ -2,7 +2,7 @@
 <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
  width="512" height="512" viewBox="0 0 512.000000 512.000000"
  preserveAspectRatio="xMidYMid meet">
-<circle cx="256" cy="256" r="228" fill="#1a1a1a"/>
+<circle cx="256" cy="256" r="228" fill="#808080"/>
 <g transform="translate(0.000000,512.000000) scale(0.050000,-0.050000)"
 fill="#d4ff00" stroke="none">
 <path d="M4600 9698 c-2768 -319 -4624 -3016 -3940 -5725 422 -1669 1810
