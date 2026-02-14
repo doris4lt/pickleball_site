@@ -37,87 +37,1095 @@
     </div>
 
     <div class="container">
-        <div class="coming-soon">
-            <h2>Coming Soon</h2>
-            <p>
-                A comprehensive guide to help you choose the right paddle based on power vs. control balance,
-                weight distribution, core materials, surface textures, and your individual playing style.
-            </p>
 
-            <div class="preview-grid">
-                <div class="preview-card">
-                    <h3>Power vs. Control</h3>
-                    <ul>
-                        <li>Understanding the trade-off</li>
-                        <li>Matching to skill level</li>
-                        <li>Playing style considerations</li>
-                        <li>Core material effects</li>
-                    </ul>
+        <!-- ============================================
+             PADDLE FINDER TOOL
+             ============================================ -->
+        <div class="finder-section" id="finder">
+            <div class="finder-title-row">
+                <h2 class="section-title">Paddle Finder Tool</h2>
+                <button class="finder-reset" id="finder-reset">Reset Selections</button>
+            </div>
+
+            <div class="finder-card">
+                <div class="finder-row">
+                    <span class="finder-row-label">What's your playing style?</span>
+                    <div class="finder-toggle-group" id="playstyle-toggle">
+                        <button class="finder-toggle" data-value="power">Power</button>
+                        <button class="finder-toggle" data-value="control">Control</button>
+                        <button class="finder-toggle active" data-value="balanced">Balanced</button>
+                        <button class="finder-toggle" data-value="exploring">Still exploring</button>
+                    </div>
                 </div>
-
-                <div class="preview-card">
-                    <h3>Core Materials</h3>
-                    <ul>
-                        <li>Polymer vs. Nomex vs. Aluminum</li>
-                        <li>Honeycomb thickness (13mm, 16mm, 19mm)</li>
-                        <li>Pop vs. touch characteristics</li>
-                        <li>Durability comparisons</li>
-                    </ul>
+                <div class="finder-row">
+                    <span class="finder-row-label">Rank what matters most to you</span>
+                    <div class="rank-list" id="rank-list">
+                        <div class="rank-item" draggable="true" data-value="power">
+                            <span class="rank-grip">⠿</span>
+                            <span class="rank-label">Power</span>
+                            <span class="rank-badge">1</span>
+                        </div>
+                        <div class="rank-item" draggable="true" data-value="control">
+                            <span class="rank-grip">⠿</span>
+                            <span class="rank-label">Control / touch</span>
+                            <span class="rank-badge">2</span>
+                        </div>
+                        <div class="rank-item" draggable="true" data-value="spin">
+                            <span class="rank-grip">⠿</span>
+                            <span class="rank-label">Spin generation</span>
+                            <span class="rank-badge">3</span>
+                        </div>
+                        <div class="rank-item" draggable="true" data-value="forgiveness">
+                            <span class="rank-grip">⠿</span>
+                            <span class="rank-label">Forgiveness</span>
+                            <span class="rank-badge">4</span>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="preview-card">
-                    <h3>Surface Technology</h3>
-                    <ul>
-                        <li>Carbon fiber vs. fiberglass</li>
-                        <li>Textured vs. smooth faces</li>
-                        <li>Spin generation capability</li>
-                        <li>Raw carbon and thermoformed edges</li>
-                    </ul>
+                <div class="finder-row">
+                    <span class="finder-row-label">What's your experience level?</span>
+                    <div class="finder-toggle-group" id="experience-toggle">
+                        <button class="finder-toggle" data-value="beginner">Beginner</button>
+                        <button class="finder-toggle" data-value="intermediate">Intermediate</button>
+                        <button class="finder-toggle" data-value="advanced">Advanced</button>
+                    </div>
                 </div>
-
-                <div class="preview-card">
-                    <h3>Weight & Balance</h3>
-                    <ul>
-                        <li>Lightweight vs. heavyweight pros/cons</li>
-                        <li>Balance point effects on maneuverability</li>
-                        <li>Swing weight considerations</li>
-                        <li>Grip size and comfort</li>
-                    </ul>
-                </div>
-
-                <div class="preview-card">
-                    <h3>Play Style Matching</h3>
-                    <ul>
-                        <li>Bangers: power-focused paddles</li>
-                        <li>Finesse players: control paddles</li>
-                        <li>All-court players: balanced options</li>
-                        <li>Transition from beginner to advanced</li>
-                    </ul>
-                </div>
-
-                <div class="preview-card">
-                    <h3>Budget Guide</h3>
-                    <ul>
-                        <li>Entry-level recommendations</li>
-                        <li>Mid-range sweet spots</li>
-                        <li>Premium paddle features</li>
-                        <li>When to upgrade</li>
-                    </ul>
+                <div class="finder-row">
+                    <span class="finder-row-label">What's your budget? <span class="slider-value" id="price-value">Loading...</span></span>
+                    <div class="finder-row-slider">
+                        <div class="dual-range">
+                            <input type="range" min="0" max="340" step="10" value="0" class="finder-slider" id="price-slider-lo">
+                            <input type="range" min="0" max="340" step="10" value="200" class="finder-slider" id="price-slider-hi">
+                            <div class="dual-range-fill" id="price-fill"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <p style="margin-top: 48px; color: var(--paddle-slate); font-style: italic;">
-                This comprehensive paddle selection guide is currently under development.
-                Check back soon for detailed breakdowns, comparison charts, and personalized recommendations.
+            <!-- Advanced Filters (collapsible) -->
+            <details class="finder-advanced" id="advanced-filters">
+                <summary>Advanced Filters</summary>
+                <div class="finder-card finder-card-inner">
+                    <div class="finder-row">
+                        <span class="finder-row-label">Weight preference?</span>
+                        <div class="finder-toggle-group" id="weight-toggle">
+                            <button class="finder-toggle" data-value="light">Lighter</button>
+                            <button class="finder-toggle" data-value="medium">Medium</button>
+                            <button class="finder-toggle" data-value="heavy">Heavier</button>
+                            <button class="finder-toggle active" data-value="none">No pref</button>
+                        </div>
+                    </div>
+                    <div class="finder-row">
+                        <span class="finder-row-label">Where do you play most?</span>
+                        <div class="finder-toggle-group" id="court-toggle">
+                            <button class="finder-toggle" data-value="baseline">Baseline</button>
+                            <button class="finder-toggle" data-value="kitchen">Kitchen</button>
+                            <button class="finder-toggle active" data-value="allcourt">All-court</button>
+                        </div>
+                    </div>
+                    <div class="finder-row">
+                        <span class="finder-row-label">How do you hit your backhand?</span>
+                        <div class="finder-toggle-group" id="grip-toggle">
+                            <button class="finder-toggle active" data-value="single">Single-handed</button>
+                            <button class="finder-toggle" data-value="double">Two-handed</button>
+                            <button class="finder-toggle" data-value="unsure">Not sure</button>
+                        </div>
+                    </div>
+                    <div class="finder-row">
+                        <span class="finder-row-label">What paddle feel do you prefer?</span>
+                        <div class="finder-toggle-group" id="feel-toggle">
+                            <button class="finder-toggle" data-value="fast">Fast hands</button>
+                            <button class="finder-toggle" data-value="stability">Stability</button>
+                            <button class="finder-toggle active" data-value="balanced">Balanced</button>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <div class="finder-results-header">
+                <h3>Matching Paddles</h3>
+                <span class="results-count" id="results-count">Loading...</span>
+            </div>
+
+            <div class="finder-results" id="finder-results">
+                <div class="finder-loading">Loading paddle database...</div>
+            </div>
+        </div>
+
+        <!-- ============================================
+             SPEC EXPLAINER
+             ============================================ -->
+        <div class="physics-section" id="specs">
+            <h2>WHAT THE SPECS MEAN</h2>
+            <p class="intro-text">
+                Paddle specs can be confusing. Here's what actually matters and how each number
+                affects your game.
             </p>
+
+            <div class="comparison-grid">
+                <div class="comparison-card">
+                    <h4>Swing Weight</h4>
+                    <ul>
+                        <li><strong>What it is:</strong> How heavy the paddle feels when you swing it — not just static weight, but weight distribution</li>
+                        <li><strong>Low (95–110):</strong> Quick hands, easy maneuverability, great for net play</li>
+                        <li><strong>Medium (110–120):</strong> Balanced feel for all-court play</li>
+                        <li><strong>High (120+):</strong> More power on drives, but slower to react at the kitchen</li>
+                    </ul>
+                </div>
+
+                <div class="comparison-card">
+                    <h4>Twist Weight</h4>
+                    <ul>
+                        <li><strong>What it is:</strong> Resistance to twisting on off-center hits — higher = more stable</li>
+                        <li><strong>Low (&lt;6.0):</strong> Less forgiving on mishits, but lighter overall</li>
+                        <li><strong>Medium (6.0–7.0):</strong> Good balance of stability and speed</li>
+                        <li><strong>High (7.0+):</strong> Very stable sweet spot, great for blocking hard shots</li>
+                    </ul>
+                </div>
+
+                <div class="comparison-card">
+                    <h4>Core Thickness</h4>
+                    <ul>
+                        <li><strong>What it is:</strong> The thickness of the honeycomb core in millimeters</li>
+                        <li><strong>Thin (11–13mm):</strong> More pop and power, less control, smaller sweet spot</li>
+                        <li><strong>Medium (14–16mm):</strong> Balanced power and control</li>
+                        <li><strong>Thick (16–19mm):</strong> Softer touch, larger sweet spot, better control</li>
+                    </ul>
+                </div>
+
+                <div class="comparison-card">
+                    <h4>Surface Material</h4>
+                    <ul>
+                        <li><strong>Carbon Fiber:</strong> Textured surface grips the ball for more spin, stiffer feel</li>
+                        <li><strong>Fiberglass:</strong> Softer feel, more power/pop, less spin potential</li>
+                        <li><strong>Hybrid:</strong> Blends properties of both materials</li>
+                        <li><strong>Raw / Textured:</strong> Maximum spin generation, common on pro-level paddles</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================
+             EDUCATIONAL SECTIONS (placeholders)
+             ============================================ -->
+        <div class="preview-grid" style="margin-top: 0;">
+            <div class="preview-card" id="materials">
+                <h3>Core Materials</h3>
+                <ul>
+                    <li>Polymer vs. Nomex vs. Aluminum</li>
+                    <li>Honeycomb thickness (13mm, 16mm, 19mm)</li>
+                    <li>Pop vs. touch characteristics</li>
+                    <li>Durability comparisons</li>
+                </ul>
+            </div>
+
+            <div class="preview-card" id="surface">
+                <h3>Surface Technology</h3>
+                <ul>
+                    <li>Carbon fiber vs. fiberglass</li>
+                    <li>Textured vs. smooth faces</li>
+                    <li>Spin generation capability</li>
+                    <li>Raw carbon and thermoformed edges</li>
+                </ul>
+            </div>
+
+            <div class="preview-card" id="weight">
+                <h3>Weight & Balance</h3>
+                <ul>
+                    <li>Lightweight vs. heavyweight pros/cons</li>
+                    <li>Balance point effects on maneuverability</li>
+                    <li>Swing weight considerations</li>
+                    <li>Grip size and comfort</li>
+                </ul>
+            </div>
+
+            <div class="preview-card">
+                <h3>Play Style Matching</h3>
+                <ul>
+                    <li>Bangers: power-focused paddles</li>
+                    <li>Finesse players: control paddles</li>
+                    <li>All-court players: balanced options</li>
+                    <li>Transition from beginner to advanced</li>
+                </ul>
+            </div>
+
+            <div class="preview-card">
+                <h3>Power vs. Control</h3>
+                <ul>
+                    <li>Understanding the trade-off</li>
+                    <li>Matching to skill level</li>
+                    <li>Playing style considerations</li>
+                    <li>Core material effects</li>
+                </ul>
+            </div>
+
+            <div class="preview-card">
+                <h3>Budget Guide</h3>
+                <ul>
+                    <li>Entry-level recommendations</li>
+                    <li>Mid-range sweet spots</li>
+                    <li>Premium paddle features</li>
+                    <li>When to upgrade</li>
+                </ul>
+            </div>
         </div>
     </div>
 
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Learn</h4>
+                <ul>
+                    <li><a href="fundamentals.html#primary">Primary Skills</a></li>
+                    <li><a href="fundamentals.html#secondary">Secondary Skills</a></li>
+                    <li><a href="spin-physics.html">Spin Physics</a></li>
+                    <li><a href="drills.html">Practice Drills</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Equipment</h4>
+                <ul>
+                    <li><a href="paddle-guide.html">Paddle Guide</a></li>
+                    <li><a href="paddle-guide.html#materials">Core Materials</a></li>
+                    <li><a href="paddle-guide.html#surface">Surface Textures</a></li>
+                    <li><a href="paddle-guide.html#weight">Weight & Balance</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="#glossary">Glossary</a></li>
+                    <li><a href="#videos">Video Library</a></li>
+                    <li><a href="#community">Community</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>About</h4>
+                <ul>
+                    <li><a href="#mission">Our Mission</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#contribute">Contribute</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Pickleball Bestie. Built for players, by players.</p>
+        </div>
+    </footer>
+
+    <script src="db/paddles.js"></script>
     <script>
+    (function() {
+        'use strict';
+
+        const paddles = window.PADDLE_DATA || [];
+
+        // ---- Compute dynamic price bounds from data ----
+        let MIN_PRICE = 35, MAX_PRICE = 340;
+        if (paddles.length) {
+            const prices = paddles.map(p => parseFloat(p.current_price)).filter(v => v > 0);
+            if (prices.length) {
+                MIN_PRICE = Math.floor(Math.min(...prices) / 10) * 10;
+                MAX_PRICE = Math.ceil(Math.max(...prices) / 10) * 10;
+            }
+        }
+
+        // ---- Price slider init ----
+        const priceLo = document.getElementById('price-slider-lo');
+        const priceHi = document.getElementById('price-slider-hi');
+        const priceFill = document.getElementById('price-fill');
+
+        priceLo.min = MIN_PRICE;
+        priceLo.max = MAX_PRICE;
+        priceLo.value = MIN_PRICE;
+        priceHi.min = MIN_PRICE;
+        priceHi.max = MAX_PRICE;
+        const defaultHi = Math.min(200, MAX_PRICE);
+        priceHi.value = defaultHi;
+        // price-lo/hi labels removed — price shown in label pill only
+
+        // ---- Toggle group helper ----
+        function getToggleValue(toggles) {
+            for (const t of toggles) {
+                if (t.classList.contains('active')) return t.dataset.value;
+            }
+            return null;
+        }
+
+        function initToggleGroup(toggles, required) {
+            toggles.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (required) {
+                        toggles.forEach(t => t.classList.remove('active'));
+                        btn.classList.add('active');
+                    } else {
+                        if (btn.classList.contains('active')) {
+                            btn.classList.remove('active');
+                        } else {
+                            toggles.forEach(t => t.classList.remove('active'));
+                            btn.classList.add('active');
+                        }
+                    }
+                    updateResults();
+                });
+            });
+        }
+
+        // ---- Init all toggle groups ----
+        const playstyleToggles = document.querySelectorAll('#playstyle-toggle .finder-toggle');
+        const experienceToggles = document.querySelectorAll('#experience-toggle .finder-toggle');
+        const weightToggles = document.querySelectorAll('#weight-toggle .finder-toggle');
+        const courtToggles = document.querySelectorAll('#court-toggle .finder-toggle');
+        const gripToggles = document.querySelectorAll('#grip-toggle .finder-toggle');
+        const feelToggles = document.querySelectorAll('#feel-toggle .finder-toggle');
+
+        initToggleGroup(playstyleToggles, true);    // always one selected
+        initToggleGroup(experienceToggles, false);  // optional — can deselect
+        initToggleGroup(weightToggles, true);       // always one selected (has "No preference")
+        initToggleGroup(courtToggles, true);        // always one selected
+        initToggleGroup(gripToggles, true);         // always one selected
+        initToggleGroup(feelToggles, true);         // always one selected
+
+        // ---- Drag-to-rank (Q2) ----
+        const rankList = document.getElementById('rank-list');
+        let rankOrder = ['power', 'control', 'spin', 'forgiveness'];
+        let dragSrcEl = null;
+
+        function updateBadges() {
+            const items = rankList.querySelectorAll('.rank-item');
+            items.forEach((item, i) => {
+                item.querySelector('.rank-badge').textContent = i + 1;
+            });
+            rankOrder = Array.from(items).map(item => item.dataset.value);
+            updateResults();
+        }
+
+        // Desktop drag-and-drop
+        rankList.addEventListener('dragstart', (e) => {
+            const item = e.target.closest('.rank-item');
+            if (!item) return;
+            dragSrcEl = item;
+            item.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', '');
+        });
+
+        rankList.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            const target = e.target.closest('.rank-item');
+            if (!target || target === dragSrcEl) return;
+            const items = Array.from(rankList.querySelectorAll('.rank-item'));
+            const dragIdx = items.indexOf(dragSrcEl);
+            const targetIdx = items.indexOf(target);
+            if (dragIdx < targetIdx) {
+                rankList.insertBefore(dragSrcEl, target.nextSibling);
+            } else {
+                rankList.insertBefore(dragSrcEl, target);
+            }
+        });
+
+        rankList.addEventListener('dragend', (e) => {
+            const item = e.target.closest('.rank-item');
+            if (item) item.classList.remove('dragging');
+            rankList.querySelectorAll('.rank-item').forEach(el => el.classList.remove('drag-over'));
+            updateBadges();
+        });
+
+        // Touch drag-and-drop fallback
+        let touchItem = null;
+        let touchClone = null;
+        let touchStartY = 0;
+
+        rankList.addEventListener('touchstart', (e) => {
+            const item = e.target.closest('.rank-item');
+            if (!item) return;
+            touchItem = item;
+            touchStartY = e.touches[0].clientY;
+            item.classList.add('dragging');
+        }, { passive: true });
+
+        rankList.addEventListener('touchmove', (e) => {
+            if (!touchItem) return;
+            e.preventDefault();
+            const touchY = e.touches[0].clientY;
+            const items = Array.from(rankList.querySelectorAll('.rank-item'));
+            for (const target of items) {
+                if (target === touchItem) continue;
+                const rect = target.getBoundingClientRect();
+                const midY = rect.top + rect.height / 2;
+                if (touchY < midY && target.compareDocumentPosition(touchItem) & Node.DOCUMENT_POSITION_FOLLOWING) {
+                    rankList.insertBefore(touchItem, target);
+                    break;
+                } else if (touchY > midY && target.compareDocumentPosition(touchItem) & Node.DOCUMENT_POSITION_PRECEDING) {
+                    rankList.insertBefore(touchItem, target.nextSibling);
+                    break;
+                }
+            }
+        }, { passive: false });
+
+        rankList.addEventListener('touchend', () => {
+            if (touchItem) {
+                touchItem.classList.remove('dragging');
+                touchItem = null;
+                updateBadges();
+            }
+        });
+
+        // ---- Price label & fill ----
+        function updatePriceLabel() {
+            const lo = Math.min(parseInt(priceLo.value), parseInt(priceHi.value));
+            const hi = Math.max(parseInt(priceLo.value), parseInt(priceHi.value));
+            document.getElementById('price-value').textContent = '$' + lo + ' – $' + hi;
+        }
+
+        function updatePriceFill() {
+            const lo = Math.min(parseInt(priceLo.value), parseInt(priceHi.value));
+            const hi = Math.max(parseInt(priceLo.value), parseInt(priceHi.value));
+            const range = MAX_PRICE - MIN_PRICE;
+            if (range <= 0) return;
+            priceFill.style.left = ((lo - MIN_PRICE) / range * 100) + '%';
+            priceFill.style.right = ((MAX_PRICE - hi) / range * 100) + '%';
+        }
+
+        priceLo.addEventListener('input', () => { updatePriceLabel(); updatePriceFill(); updateResults(); });
+        priceHi.addEventListener('input', () => { updatePriceLabel(); updatePriceFill(); updateResults(); });
+
+        if (!paddles.length) {
+            document.getElementById('finder-results').innerHTML =
+                '<p style="text-align:center;color:var(--paddle-gray);">Could not load paddle database.</p>';
+        }
+
+        // ============================================
+        // DATA EXTRACTION HELPERS
+        // ============================================
+
+        function classifyShape(paddle) {
+            const len = parseFloat(paddle.length_inches);
+            const wid = parseFloat(paddle.width_inches);
+            if (len && wid) {
+                const ratio = len / wid;
+                if (ratio > 2.15) return 'elongated';
+                if (ratio < 2.0) return 'standard';
+                return 'hybrid';
+            }
+            const type = (paddle.paddle_type || '').toLowerCase();
+            if (type.includes('elongat') || type.includes('super elong')) return 'elongated';
+            if (type.includes('standard') || type.includes('square') || type.includes('wide') || type.includes('round')) return 'standard';
+            if (type.includes('hybrid') || type.includes('aero hybrid')) return 'hybrid';
+            return 'unknown';
+        }
+
+        function surfaceIsCarbon(mat) {
+            const m = (mat || '').toLowerCase();
+            return m.includes('carbon') || m.includes('t700') || m.includes('kevlar') || m.includes('aramid');
+        }
+
+        function surfaceIsFiberglass(mat) {
+            const m = (mat || '').toLowerCase();
+            return m.includes('fiberglass') || m.includes('fiberflex');
+        }
+
+        // Map surface_material → algorithm's face_material enum
+        function getFaceMaterial(paddle) {
+            const m = (paddle.surface_material || '').toLowerCase();
+            if (m.includes('fiberglass') || m.includes('fiberflex')) return 'fiberglass';
+            if (m.includes('graphite') && !m.includes('carbon')) return 'graphite';
+            if (m.includes('carbon') || m.includes('t700') || m.includes('kevlar') || m.includes('aramid')) return 'carbon_fiber';
+            return 'carbon_fiber'; // default for unknowns (composites, etc.)
+        }
+
+        // Map surface_material + spin_texture → algorithm's surface_texture enum
+        function getSurfaceTexture(paddle) {
+            const m = (paddle.surface_material || '').toLowerCase();
+            const st = (paddle.spin_texture || '').toLowerCase();
+            if (m.includes('raw')) return 'raw_carbon';
+            if (st.includes('spin') || m.includes('textured') || m.includes('friction') || m.includes('grip surface')) return 'textured';
+            return 'smooth';
+        }
+
+        // Map core_material → algorithm's core_material enum
+        function getCoreMaterial(paddle) {
+            const m = (paddle.core_material || '').toLowerCase();
+            if (m.includes('nomex')) return 'nomex';
+            if (m.includes('aluminum')) return 'aluminum';
+            // polymer covers: polypropylene, polymer, honeycomb, foam (all polymer family)
+            return 'polymer';
+        }
+
+        function getWeight(paddle) {
+            const min = parseFloat(paddle.average_weight_oz_min);
+            if (!min) return null;
+            const max = parseFloat(paddle.average_weight_oz_max);
+            return (min + (max || min)) / 2;
+        }
+
+        function getSwingWeight(paddle) {
+            const min = parseFloat(paddle.swing_weight_min);
+            if (!min) return null;
+            const max = parseFloat(paddle.swing_weight_max);
+            return (min + (max || min)) / 2;
+        }
+
+        function getTwistWeight(paddle) {
+            const min = parseFloat(paddle.twist_weight_min);
+            if (!min) return null;
+            const max = parseFloat(paddle.twist_weight_max);
+            return (min + (max || min)) / 2;
+        }
+
+        function getPaddleLength(paddle) { return parseFloat(paddle.length_inches) || 0; }
+        function getPaddleWidth(paddle) { return parseFloat(paddle.width_inches) || 0; }
+        function getGripLength(paddle) { return parseFloat(paddle.grip_length_inches) || 0; }
+        function getCoreThickness(paddle) { return parseFloat(paddle.core_thickness_mm) || 0; }
+        function getPrice(paddle) { return parseFloat(paddle.current_price) || 0; }
+
+        function isElongatedHandle(paddle) {
+            const t = (paddle.paddle_type || '').toLowerCase();
+            return t.includes('elongat');
+        }
+
+        // ============================================
+        // 8 COMPONENT SCORING FUNCTIONS (each 0–10)
+        // ============================================
+
+        // 1. POWER SCORE
+        function calcPowerScore(paddle, wantsPower) {
+            if (!wantsPower) return 5;
+            let s = 0;
+            const thick = getCoreThickness(paddle);
+            if (thick && thick <= 13) s += 3;
+            else if (thick === 14) s += 2;
+            else if (thick === 16) s += 1;
+
+            const core = getCoreMaterial(paddle);
+            if (core === 'nomex') s += 2.5;
+            else if (core === 'aluminum') s += 2;
+            else s += 0.5; // polymer
+
+            const face = getFaceMaterial(paddle);
+            if (face === 'carbon_fiber') s += 2;
+            else if (face === 'graphite') s += 1;
+
+            const w = getWeight(paddle);
+            if (w !== null) {
+                if (w >= 8.2) s += 1.5;
+                else if (w >= 7.8) s += 0.5;
+            }
+
+            if (getPaddleLength(paddle) >= 16.5) s += 1;
+
+            return Math.min(10, s);
+        }
+
+        // 2. CONTROL SCORE
+        function calcControlScore(paddle, wantsControl) {
+            if (!wantsControl) return 5;
+            let s = 0;
+            const thick = getCoreThickness(paddle);
+            if (thick >= 19) s += 3;
+            else if (thick >= 16) s += 2;
+            else if (thick >= 14) s += 1;
+
+            const core = getCoreMaterial(paddle);
+            if (core === 'polymer') s += 2;
+
+            const face = getFaceMaterial(paddle);
+            if (face === 'fiberglass') s += 2;
+            else if (face === 'graphite') s += 1.5;
+            else if (face === 'carbon_fiber') s += 1;
+
+            const tex = getSurfaceTexture(paddle);
+            if (tex === 'raw_carbon' || tex === 'textured') s += 2;
+
+            const w = getWeight(paddle);
+            if (w !== null) {
+                if (w <= 7.8) s += 1;
+                else if (w <= 8.0) s += 0.5;
+            }
+
+            return Math.min(10, s);
+        }
+
+        // 3. FORGIVENESS SCORE
+        function calcForgivenessScore(paddle, needsForgiveness) {
+            let s = 0;
+            const thick = getCoreThickness(paddle);
+            if (thick >= 19) s += 3;
+            else if (thick >= 16) s += 2;
+            else if (thick === 14) s += 1;
+
+            const core = getCoreMaterial(paddle);
+            if (core === 'polymer') s += 2;
+
+            const width = getPaddleWidth(paddle);
+            if (width >= 8.0) s += 2;
+            else if (width >= 7.5) s += 1;
+
+            const w = getWeight(paddle);
+            if (w !== null && w >= 7.8 && w <= 8.2) s += 1.5;
+
+            const tw = getTwistWeight(paddle);
+            if (tw !== null && needsForgiveness) {
+                const norm = Math.max(0, Math.min(1, (tw - 4.5) / (7.0 - 4.5)));
+                s += norm * 2.5;
+            }
+
+            return Math.min(10, s);
+        }
+
+        // 4. SPIN SCORE
+        function calcSpinScore(paddle, spinPhilosophy) {
+            if (spinPhilosophy === 'power_based') return 3;
+            if (spinPhilosophy === 'neutral') return 5;
+
+            // spin_heavy
+            let s = 0;
+            const tex = getSurfaceTexture(paddle);
+            if (tex === 'raw_carbon') s += 4;
+            else if (tex === 'textured') s += 2.5;
+            else s += 0.5;
+
+            if (getCoreThickness(paddle) >= 16) s += 1.5;
+
+            const face = getFaceMaterial(paddle);
+            if (face === 'carbon_fiber') s += 1.5;
+
+            return Math.min(10, s);
+        }
+
+        // 5. SWING WEIGHT PREFERENCE SCORE
+        function calcSwingWeightScore(paddle, feel) {
+            const sw = getSwingWeight(paddle);
+            if (sw === null) return 5;
+
+            const norm = Math.max(0, Math.min(1, (sw - 105) / (125 - 105)));
+
+            if (feel === 'fast_hands') return 10 * (1 - norm);
+            if (feel === 'stability') return 10 * norm;
+            // balanced
+            const dist = Math.abs(norm - 0.5);
+            return 10 * (1 - dist * 2);
+        }
+
+        // 6. PHYSICAL FIT SCORE
+        function calcPhysicalFit(paddle, profile) {
+            let fit = 10;
+
+            // Grip style hard filter for double-handed
+            if (profile.gripStyle === 'double_handed') {
+                if (getGripLength(paddle) < 5.25 && !isElongatedHandle(paddle)) {
+                    return 0; // incompatible
+                }
+            }
+
+            // Weight preference check
+            const w = getWeight(paddle);
+            if (w !== null && profile.weightPreference !== 'no_pref') {
+                const ranges = { light: [7.0, 7.8], medium: [7.8, 8.2], heavy: [8.2, 8.6] };
+                const r = ranges[profile.weightPreference];
+                if (r && (w < r[0] || w > r[1])) fit -= 3;
+            }
+
+            return Math.max(0, fit);
+        }
+
+        // 7. SKILL FIT SCORE
+        function calcSkillFit(paddle, profile) {
+            let s = 10;
+            const thick = getCoreThickness(paddle);
+            const core = getCoreMaterial(paddle);
+            const width = getPaddleWidth(paddle);
+
+            if (profile.experienceLevel === 'beginner') {
+                if (thick && thick < 14) s -= 3;
+                if (core !== 'polymer') s -= 2;
+                if (width && width < 7.5) s -= 2;
+            } else if (profile.experienceLevel === 'intermediate') {
+                if (thick && (thick < 13 || thick > 19)) s -= 1;
+            }
+            // advanced: no penalties
+
+            return Math.max(0, s);
+        }
+
+        // 8. BUDGET FIT SCORE
+        function calcBudgetFit(paddle, budgetMin, budgetMax) {
+            const price = getPrice(paddle);
+            if (!price) return 0;
+
+            if (price >= budgetMin && price <= budgetMax) return 10;
+
+            // Slightly over (within 15%)
+            if (price > budgetMax && price <= budgetMax * 1.15) {
+                const overage = (price - budgetMax) / (budgetMax * 0.15);
+                return Math.max(7, 10 - overage * 3);
+            }
+
+            // Slightly under (within 20%)
+            if (price < budgetMin && price >= budgetMin * 0.8) return 8;
+
+            return 0;
+        }
+
+        // ============================================
+        // FINAL SCORE CALCULATION
+        // ============================================
+
+        function scoreAndRank(paddle, profile) {
+            const price = getPrice(paddle);
+            if (!price) return null;
+
+            // Determine user wants
+            const wantsPower = profile.playStyle === 'power';
+            const wantsControl = profile.playStyle === 'control';
+            const needsForgiveness = profile.experienceLevel === 'beginner' || profile.experienceLevel === 'intermediate';
+
+            // Derive spinPhilosophy from priority ranking
+            const spinIdx = profile.priorities.indexOf('spin');
+            const powerIdx = profile.priorities.indexOf('power');
+            let spinPhilosophy = 'neutral';
+            if (spinIdx === 0) spinPhilosophy = 'spin_heavy';
+            else if (powerIdx === 0 && spinIdx === 3) spinPhilosophy = 'power_based';
+
+            // Map feel preference
+            const feelMap = { fast: 'fast_hands', stability: 'stability', balanced: 'balanced' };
+            const feel = feelMap[profile.paddleFeel] || 'balanced';
+
+            // Calculate all 8 components
+            const powerScore = calcPowerScore(paddle, wantsPower);
+            const controlScore = calcControlScore(paddle, wantsControl);
+            const forgivenessScore = calcForgivenessScore(paddle, needsForgiveness);
+            const spinScore = calcSpinScore(paddle, spinPhilosophy);
+            const swingWeightScore = calcSwingWeightScore(paddle, feel);
+            const physicalFit = calcPhysicalFit(paddle, profile);
+            const skillFit = calcSkillFit(paddle, profile);
+            const budgetFit = calcBudgetFit(paddle, profile.budgetMin, profile.budgetMax);
+
+            // Hard filter: physicalFit 0 means incompatible
+            if (physicalFit === 0) return null;
+            // Hard filter: budgetFit 0 means way outside range
+            if (budgetFit === 0) return null;
+
+            // Weighted style score using priority ranking
+            const weights = [0.40, 0.25, 0.20, 0.15];
+            const scoreMap = { power: powerScore, control: controlScore, spin: spinScore, forgiveness: forgivenessScore };
+            let styleScore = 0;
+            profile.priorities.forEach((p, i) => { styleScore += (scoreMap[p] || 5) * weights[i]; });
+
+            // Position adjustment
+            let positionScore = styleScore;
+            if (profile.courtPosition === 'baseline') {
+                positionScore = powerScore * 0.7 + (getPaddleLength(paddle) >= 16.5 ? 3 : 0);
+            } else if (profile.courtPosition === 'kitchen') {
+                positionScore = controlScore * 0.4 + swingWeightScore * 0.6;
+            }
+            if (profile.gripStyle === 'double_handed' && getPaddleLength(paddle) >= 16.5) {
+                positionScore += 0.5;
+            }
+
+            // Blend styleScore with positionScore when court position is specific
+            const effectiveStyle = (profile.courtPosition === 'allcourt') ? styleScore : (styleScore * 0.6 + positionScore * 0.4);
+
+            // Confidence multiplier
+            let confidence = 1.0;
+            if (getTwistWeight(paddle) === null && needsForgiveness) confidence *= 0.95;
+            if (getSwingWeight(paddle) === null && feel !== 'balanced') confidence *= 0.95;
+
+            // Final weighted total (0–10 scale)
+            const totalScore = (
+                effectiveStyle * 0.45 +
+                physicalFit * 0.25 +
+                skillFit * 0.15 +
+                budgetFit * 0.15
+            ) * confidence;
+
+            // Build reasoning
+            const whyItFits = [];
+            const tradeoffs = [];
+
+            // Top 2 priority reasons
+            const top2 = profile.priorities.slice(0, 2);
+            for (const p of top2) {
+                const val = scoreMap[p];
+                if (p === 'power' && val >= 6) whyItFits.push(getCoreThickness(paddle) + 'mm core + ' + (getWeight(paddle) || '?') + 'oz weight delivers solid power');
+                if (p === 'control' && val >= 6) whyItFits.push(getCoreThickness(paddle) + 'mm ' + getCoreMaterial(paddle) + ' core supports precise touch');
+                if (p === 'spin' && val >= 6) whyItFits.push(getSurfaceTexture(paddle).replace('_', ' ') + ' surface maximizes spin generation');
+                if (p === 'forgiveness' && val >= 6) whyItFits.push(getPaddleWidth(paddle).toFixed(1) + '" wide face with ' + getCoreThickness(paddle) + 'mm core for a large sweet spot');
+            }
+            if (swingWeightScore >= 7 && feel === 'fast_hands') whyItFits.push('Low swing weight for quick hand exchanges');
+            if (swingWeightScore >= 7 && feel === 'stability') whyItFits.push('High swing weight for stable, powerful shots');
+            if (budgetFit === 10) whyItFits.push('Within your budget at $' + price.toFixed(0));
+
+            // Tradeoffs
+            if (budgetFit < 10 && budgetFit >= 7) tradeoffs.push('Slightly above budget at $' + price.toFixed(0));
+            if (wantsPower && powerScore < 5) tradeoffs.push('May lack raw power for aggressive drives');
+            if (wantsControl && controlScore < 5) tradeoffs.push('Less touch feel than dedicated control paddles');
+            if (getTwistWeight(paddle) === null) tradeoffs.push('No twist weight data available');
+            if (getSwingWeight(paddle) === null) tradeoffs.push('No swing weight data available');
+
+            return {
+                paddle,
+                totalScore,
+                confidence,
+                componentScores: { power: powerScore, control: controlScore, forgiveness: forgivenessScore, spin: spinScore, swingWeight: swingWeightScore, physicalFit, skillFit, budgetFit },
+                whyItFits: whyItFits.slice(0, 4),
+                tradeoffs: tradeoffs.slice(0, 3)
+            };
+        }
+
+        // ============================================
+        // PERSIST / RESTORE SELECTIONS (localStorage)
+        // ============================================
+
+        const STORAGE_KEY = 'paddleFinder_v1';
+
+        function saveState() {
+            try {
+                const state = {
+                    playStyle: getToggleValue(playstyleToggles),
+                    priorities: rankOrder.slice(),
+                    experience: getToggleValue(experienceToggles),
+                    priceLo: priceLo.value,
+                    priceHi: priceHi.value,
+                    weight: getToggleValue(weightToggles),
+                    court: getToggleValue(courtToggles),
+                    grip: getToggleValue(gripToggles),
+                    feel: getToggleValue(feelToggles),
+                    advancedOpen: document.getElementById('advanced-filters').open
+                };
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            } catch (e) { /* storage full or disabled — ignore */ }
+        }
+
+        function setToggle(toggles, value) {
+            if (!value) { toggles.forEach(t => t.classList.remove('active')); return; }
+            toggles.forEach(t => {
+                t.classList.toggle('active', t.dataset.value === value);
+            });
+        }
+
+        function restoreState() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (!raw) return;
+                const s = JSON.parse(raw);
+
+                if (s.playStyle) setToggle(playstyleToggles, s.playStyle);
+                if (s.experience) setToggle(experienceToggles, s.experience);
+                if (s.weight) setToggle(weightToggles, s.weight);
+                if (s.court) setToggle(courtToggles, s.court);
+                if (s.grip) setToggle(gripToggles, s.grip);
+                if (s.feel) setToggle(feelToggles, s.feel);
+
+                if (s.priceLo != null) priceLo.value = s.priceLo;
+                if (s.priceHi != null) priceHi.value = s.priceHi;
+
+                if (Array.isArray(s.priorities) && s.priorities.length === 4) {
+                    const items = Array.from(rankList.querySelectorAll('.rank-item'));
+                    s.priorities.forEach(val => {
+                        const item = items.find(el => el.dataset.value === val);
+                        if (item) rankList.appendChild(item);
+                    });
+                    rankOrder = s.priorities.slice();
+                    const badges = rankList.querySelectorAll('.rank-item');
+                    badges.forEach((item, i) => { item.querySelector('.rank-badge').textContent = i + 1; });
+                }
+
+                if (s.advancedOpen) document.getElementById('advanced-filters').open = true;
+            } catch (e) { /* corrupt data — ignore, use defaults */ }
+        }
+
+        // ============================================
+        // BUILD USER PROFILE & RENDER
+        // ============================================
+
+        function updateResults() {
+            saveState();
+            // Build user profile from all question controls
+            const rawPlayStyle = getToggleValue(playstyleToggles);
+            const profile = {
+                playStyle: rawPlayStyle === 'exploring' ? null : (rawPlayStyle || 'balanced'),
+                priorities: rankOrder.slice(),
+                experienceLevel: getToggleValue(experienceToggles) || null,
+                budgetMin: Math.min(parseInt(priceLo.value), parseInt(priceHi.value)),
+                budgetMax: Math.max(parseInt(priceLo.value), parseInt(priceHi.value)),
+                weightPreference: getToggleValue(weightToggles) === 'none' ? 'no_pref' : (getToggleValue(weightToggles) || 'no_pref'),
+                courtPosition: getToggleValue(courtToggles) || 'allcourt',
+                gripStyle: ({ single: 'single_handed', double: 'double_handed', unsure: 'not_sure' })[getToggleValue(gripToggles)] || 'single_handed',
+                paddleFeel: getToggleValue(feelToggles) || 'balanced'
+            };
+
+            if (!paddles.length) return;
+
+            // Sort strictly by score; break exact ties by alternating brands
+            const scored = paddles
+                .map(p => scoreAndRank(p, profile))
+                .filter(Boolean)
+                .sort((a, b) => {
+                    if (b.totalScore !== a.totalScore) return b.totalScore - a.totalScore;
+                    const brandA = (a.paddle.brand || '').toLowerCase();
+                    const brandB = (b.paddle.brand || '').toLowerCase();
+                    if (brandA !== brandB) return brandA < brandB ? -1 : 1;
+                    return 0;
+                })
+                .slice(0, 20);
+
+            const countEl = document.getElementById('results-count');
+            const resultsEl = document.getElementById('finder-results');
+
+            if (!scored.length) {
+                countEl.textContent = '0 matches';
+                resultsEl.innerHTML = '<p class="finder-empty">No paddles match your current filters. Try widening your price range or adjusting advanced filters.</p>';
+                return;
+            }
+
+            countEl.textContent = scored.length + ' match' + (scored.length !== 1 ? 'es' : '');
+
+            resultsEl.innerHTML = scored.map(({ paddle, totalScore, confidence, componentScores, whyItFits, tradeoffs }, idx) => {
+                const price = getPrice(paddle);
+                const shape = classifyShape(paddle);
+                const shapeName = shape === 'elongated' ? 'Elongated' : shape === 'standard' ? 'Standard' : shape === 'hybrid' ? 'Hybrid' : '';
+                const swMin = paddle.swing_weight_min;
+                const swMax = paddle.swing_weight_max;
+                const sw = swMin ? (swMax && swMax !== swMin ? swMin + '–' + swMax : swMin) : '—';
+                const twMin = paddle.twist_weight_min;
+                const twMax = paddle.twist_weight_max;
+                const twDisplay = twMin ? (twMax && twMax !== twMin ? twMin + '–' + twMax : twMin) : '—';
+                const wMin = paddle.average_weight_oz_min;
+                const wMax = paddle.average_weight_oz_max;
+                const weight = wMin ? (wMax ? wMin + '–' + wMax + ' oz' : wMin + ' oz') : '—';
+                const core = paddle.core_thickness_mm ? paddle.core_thickness_mm + 'mm' : '—';
+                const matchDisplay = totalScore.toFixed(1);
+
+                let coreMat = (paddle.core_material || '—');
+                if (coreMat.length > 30) {
+                    if (coreMat.toLowerCase().includes('polypropylene')) coreMat = 'Polypropylene';
+                    else if (coreMat.toLowerCase().includes('foam')) coreMat = 'Foam';
+                    else if (coreMat.toLowerCase().includes('polymer')) coreMat = 'Polymer';
+                    else coreMat = coreMat.substring(0, 28) + '…';
+                }
+
+                let surfaceShort = (paddle.surface_material || '—');
+                if (surfaceShort.length > 40) {
+                    if (surfaceIsCarbon(surfaceShort)) surfaceShort = 'Carbon Fiber';
+                    else if (surfaceIsFiberglass(surfaceShort)) surfaceShort = 'Fiberglass';
+                    else surfaceShort = surfaceShort.substring(0, 38) + '…';
+                }
+
+                // Component score bar (highest scoring components)
+                const compEntries = [
+                    ['Power', componentScores.power],
+                    ['Control', componentScores.control],
+                    ['Spin', componentScores.spin],
+                    ['Forgive', componentScores.forgiveness],
+                    ['Feel', componentScores.swingWeight]
+                ];
+
+                const compBars = compEntries.map(([label, val]) =>
+                    `<div class="comp-bar"><span class="comp-label">${label}</span><div class="comp-track"><div class="comp-fill" style="width:${val * 10}%"></div></div><span class="comp-val">${val.toFixed(1)}</span></div>`
+                ).join('');
+
+                const fitHtml = whyItFits.length ? whyItFits.map(r => '<span class="paddle-reason paddle-reason-fit">' + escapeHtml(r) + '</span>').join('') : '';
+                const tradeoffHtml = tradeoffs.length ? tradeoffs.map(r => '<span class="paddle-reason paddle-reason-tradeoff">' + escapeHtml(r) + '</span>').join('') : '';
+
+                return `
+                <a class="paddle-card" data-brand="${(paddle.brand || '').toLowerCase()}" href="${escapeHtml(paddle.product_url)}" target="_blank" rel="noopener">
+                    <div class="paddle-card-header">
+                        <span class="paddle-brand">${escapeHtml(paddle.brand)}</span>
+                        <span class="paddle-match">${matchDisplay}</span>
+                    </div>
+                    <h4 class="paddle-model">${escapeHtml(paddle.model)}</h4>
+                    <div class="paddle-comp-scores">${compBars}</div>
+                    <div class="paddle-specs">
+                        <div class="paddle-spec"><span class="spec-label">Price</span><span class="spec-val">$${price.toFixed(0)}</span></div>
+                        <div class="paddle-spec"><span class="spec-label">Weight</span><span class="spec-val">${weight}</span></div>
+                        <div class="paddle-spec"><span class="spec-label">Core</span><span class="spec-val">${core}</span></div>
+                        <div class="paddle-spec"><span class="spec-label">Swing Wt</span><span class="spec-val">${sw}</span></div>
+                        <div class="paddle-spec"><span class="spec-label">Twist Wt</span><span class="spec-val">${twDisplay}</span></div>
+                        ${shapeName ? `<div class="paddle-spec"><span class="spec-label">Shape</span><span class="spec-val">${shapeName}</span></div>` : ''}
+                        <div class="paddle-spec"><span class="spec-label">Surface</span><span class="spec-val spec-val-right">${escapeHtml(surfaceShort)}</span></div>
+                        <div class="paddle-spec spec-stacked"><span class="spec-label">Core Material</span><span class="spec-val">${escapeHtml(coreMat)}</span></div>
+                    </div>
+                    ${fitHtml || tradeoffHtml ? `<div class="paddle-reasons">${fitHtml}${tradeoffHtml}</div>` : ''}
+                </a>`;
+            }).join('');
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        }
+
+        // ---- Reset ----
+        const resetBtn = document.getElementById('finder-reset');
+        resetBtn.addEventListener('click', (e) => {
+            const rect = resetBtn.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const ripple = document.createElement('span');
+            ripple.className = 'ripple';
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+            ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+            resetBtn.appendChild(ripple);
+            ripple.addEventListener('animationend', () => ripple.remove());
+
+            // Q1: Play style → Balanced
+            playstyleToggles.forEach(t => t.classList.remove('active'));
+            document.querySelector('#playstyle-toggle [data-value="balanced"]').classList.add('active');
+
+            // Q2: Rank → original order
+            const origOrder = ['power', 'control', 'spin', 'forgiveness'];
+            const items = Array.from(rankList.querySelectorAll('.rank-item'));
+            origOrder.forEach(val => {
+                const item = items.find(el => el.dataset.value === val);
+                if (item) rankList.appendChild(item);
+            });
+            updateBadges();
+
+            // Q3: Experience → none
+            experienceToggles.forEach(t => t.classList.remove('active'));
+
+            // Q4: Price → [MIN, 200]
+            priceLo.value = MIN_PRICE;
+            priceHi.value = defaultHi;
+            updatePriceLabel();
+            updatePriceFill();
+
+            // Q5: Weight → No preference
+            weightToggles.forEach(t => t.classList.remove('active'));
+            document.querySelector('#weight-toggle [data-value="none"]').classList.add('active');
+
+            // Q6: Court → All-court
+            courtToggles.forEach(t => t.classList.remove('active'));
+            document.querySelector('#court-toggle [data-value="allcourt"]').classList.add('active');
+
+            // Q7: Grip → Single-handed
+            gripToggles.forEach(t => t.classList.remove('active'));
+            document.querySelector('#grip-toggle [data-value="single"]').classList.add('active');
+
+            // Q8: Feel → Balanced
+            feelToggles.forEach(t => t.classList.remove('active'));
+            document.querySelector('#feel-toggle [data-value="balanced"]').classList.add('active');
+
+            try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+
+            updateResults();
+        });
+
+        // ---- Restore previous selections & initial render ----
+        restoreState();
+        updatePriceLabel();
+        updatePriceFill();
+        updateResults();
+
+        // ---- Hamburger menu ----
         document.querySelector('.hamburger').addEventListener('click', function() {
             this.classList.toggle('active');
             document.querySelector('.nav-links').classList.toggle('active');
         });
+    })();
     </script>
 </body>
 </html>
